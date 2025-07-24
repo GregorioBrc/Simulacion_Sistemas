@@ -5,6 +5,6 @@ import Class.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        new Ventana(new Arbol().Cuerpo);
+        new Ventana(new Arbol("Main").getCuerpo());
     }
 }

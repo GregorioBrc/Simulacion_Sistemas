@@ -15,12 +15,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Arbol {
-    public double Total_GeneraxTick;
-    public JPanel Cuerpo;
-    public ArrayList<Nodo> Nodos;
 
-    public Arbol() throws IOException {
+    private final int Const_Separacion = 75;
+    private double Total_GeneraxTick;
+    private JPanel Cuerpo;
+    private ArrayList<Nodo> Nodos;
+    private String Nombre;
+
+    public Arbol(String Nm) throws IOException {
         Nodos = new ArrayList<Nodo>();
+        Nombre = Nm;
         Cargar_Panel();
         Cargar_Nodos();
         Cargar_Vertices();
@@ -36,7 +40,7 @@ public class Arbol {
     }
 
     private void Cargar_Nodos() throws IOException {
-        File Fl = new File("Nodos.dt");
+        File Fl = new File("Nd_" + Nombre + ".dt");
         if (Fl.exists()) {
             BufferedReader Br = new BufferedReader(new FileReader(Fl));
 
@@ -72,7 +76,7 @@ public class Arbol {
 
     public void Guardar_Nodos() {
         try {
-            File Fl = new File("Nodos.dt");
+            File Fl = new File("Nd_" + Nombre + ".dt");
             BufferedWriter Bw = new BufferedWriter(new FileWriter(Fl));
             String Nd = "";
 
@@ -115,36 +119,36 @@ public class Arbol {
     }
 
     public void Cargar_Cuerpo_Nodos() {
-        int a = Cuerpo.getWidth() / 2, b = Cuerpo.getHeight() / 2, c = 1;
+        int a = Cuerpo.getWidth() / 2, b = Cuerpo.getHeight() - Nodos.get(0).getCuerpo().getHeight() * 2, c = 1;
 
-        for (int i = 0, j = 1; i < Nodos.size(); i++,j++) {
+        for (int i = 0, j = 1, k = 0; i < Nodos.size(); i++, j++) {
             JLabel Ax = Nodos.get(i).getCuerpo();
             Ax.setBackground(Color.BLACK);
             Ax.setOpaque(true);
             // Ax.setSize(10, 10);
             if (c % 2 == 0) {
-                if (j < c / 2) {
-                    Ax.setLocation(a - j * 25, b);
+                if (j <= c / 2) {
+                    Ax.setLocation(a - j * Const_Separacion + Const_Separacion/2, b - Ax.getHeight() - 10);
                 } else {
-                    Ax.setLocation(a + j * 25, b);
+                    Ax.setLocation(a + k * Const_Separacion - Const_Separacion/2, b - Ax.getHeight() - 10);
+                    k++;
                 }
             } else {
                 if (j < Math.round((double) c / 2.0)) {
-                    Ax.setLocation(a - j * 25, b);
-                }
-                if (j > Math.round((double) c / 2.0)) {
-                    Ax.setLocation(a + j * 25, b);
+                    Ax.setLocation(a - j * Const_Separacion, b - Ax.getHeight() - 10);
+                } else if (j > Math.round((double) c / 2.0)) {
+                    Ax.setLocation(a + k * Const_Separacion, b - Ax.getHeight() - 10);
+                    k++;
                 } else {
-                    Ax.setLocation(a, b);
+                    Ax.setLocation(a, b - Ax.getHeight() - 10);
                 }
             }
 
-            //Ax.setLocation(a - Ax.getWidth() / 2, b - Ax.getHeight() - 10);
-
             if (j == c) {
-                b -= 30;
+                b -= Const_Separacion;
                 c++;
-                j = 1;
+                j = 0;
+                k = 1;
             }
             System.out.println(Ax.getBounds());
             Cuerpo.add(Ax);
@@ -162,6 +166,22 @@ public class Arbol {
 
     public void setNodos(ArrayList<Nodo> nodos) {
         Nodos = nodos;
+    }
+
+    public double getTotal_GeneraxTick() {
+        return Total_GeneraxTick;
+    }
+
+    public JPanel getCuerpo() {
+        return Cuerpo;
+    }
+
+    public ArrayList<Nodo> getNodos() {
+        return Nodos;
+    }
+
+    public String getNombre() {
+        return Nombre;
     }
 
 }
