@@ -1,16 +1,19 @@
 package Class;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JLabel;
+import javax.swing.event.MouseInputListener;
 
-public class Nodo {
+public class Nodo  implements MouseInputListener{
     private int Id;
     private String Nombre;
     private String Descripcion;
     private boolean Is_Activ;
     private JLabel Cuerpo;
+    private boolean Select;
     private ArrayList<Nodo> Vertice;
     private int[] id_Vertice;
 
@@ -25,6 +28,9 @@ public class Nodo {
         Is_Activ = Nd.isIs_Activ();
         Vertice = Nd.getVertice();
         id_Vertice = Nd.getId_Vertice();
+        Cuerpo = Nd.Cuerpo;
+        
+         Cuerpo.addMouseListener(this);
     }
 
     public Nodo(int id, String nombre, String descripcion, boolean is_Activ) {
@@ -94,4 +100,39 @@ public class Nodo {
     public void setId_Vertice(int[] id_Vertice) {
         this.id_Vertice = id_Vertice;
     }
+
+    public boolean isSelect() {
+        return Select;
+    }
+
+    public void setSelect(boolean select) {
+        Select = select;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {System.out.println("Hola");}
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseDragged(MouseEvent e) {}
+
+    @Override
+    public void mouseMoved(MouseEvent e) {}
+
+    public void setCuerpo(JLabel cuerpo) {
+        Cuerpo = cuerpo;
+    }
+
+    
 }

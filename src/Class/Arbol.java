@@ -1,5 +1,7 @@
 package Class;
 
+import java.awt.Color;
+import java.awt.Label;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import Misc.Utils;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Arbol {
@@ -16,11 +20,19 @@ public class Arbol {
     public ArrayList<Nodo> Nodos;
 
     public Arbol() throws IOException {
-        Cuerpo = new JPanel();
         Nodos = new ArrayList<Nodo>();
+        Cargar_Panel();
         Cargar_Nodos();
         Cargar_Vertices();
+        Cargar_Cuerpo_Nodos();
         Calcular_Total();
+    }
+
+    private void Cargar_Panel() {
+        Cuerpo = new JPanel();
+        Cuerpo.setSize(500, 500);
+        Cuerpo.setLayout(null);
+        Cuerpo.setBackground(Color.GREEN);
     }
 
     private void Cargar_Nodos() throws IOException {
@@ -99,6 +111,43 @@ public class Arbol {
                 }
             }
             Nodos.get(i).setVertice(Ax);
+        }
+    }
+
+    public void Cargar_Cuerpo_Nodos() {
+        int a = Cuerpo.getWidth() / 2, b = Cuerpo.getHeight() / 2, c = 1;
+
+        for (int i = 0, j = 1; i < Nodos.size(); i++,j++) {
+            JLabel Ax = Nodos.get(i).getCuerpo();
+            Ax.setBackground(Color.BLACK);
+            Ax.setOpaque(true);
+            // Ax.setSize(10, 10);
+            if (c % 2 == 0) {
+                if (j < c / 2) {
+                    Ax.setLocation(a - j * 25, b);
+                } else {
+                    Ax.setLocation(a + j * 25, b);
+                }
+            } else {
+                if (j < Math.round((double) c / 2.0)) {
+                    Ax.setLocation(a - j * 25, b);
+                }
+                if (j > Math.round((double) c / 2.0)) {
+                    Ax.setLocation(a + j * 25, b);
+                } else {
+                    Ax.setLocation(a, b);
+                }
+            }
+
+            //Ax.setLocation(a - Ax.getWidth() / 2, b - Ax.getHeight() - 10);
+
+            if (j == c) {
+                b -= 30;
+                c++;
+                j = 1;
+            }
+            System.out.println(Ax.getBounds());
+            Cuerpo.add(Ax);
         }
     }
 
