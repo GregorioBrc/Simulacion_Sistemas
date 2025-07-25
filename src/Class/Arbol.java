@@ -1,7 +1,8 @@
 package Class;
 
 import java.awt.Color;
-import java.awt.Label;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,13 +15,16 @@ import Misc.Utils;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Arbol {
+import App.Arbol_Listener;
 
-    private final int Const_Separacion = 75;
+public class Arbol implements MouseListener {
+
+    private final int Const_Separacion = 100;
     private double Total_GeneraxTick;
     private JPanel Cuerpo;
     private ArrayList<Nodo> Nodos;
     private String Nombre;
+    private Arbol_Listener Ar_List;
 
     public Arbol(String Nm) throws IOException {
         Nodos = new ArrayList<Nodo>();
@@ -34,9 +38,10 @@ public class Arbol {
 
     private void Cargar_Panel() {
         Cuerpo = new JPanel();
-        Cuerpo.setSize(500, 500);
+        Cuerpo.setSize(1000, 1000);
         Cuerpo.setLayout(null);
         Cuerpo.setBackground(Color.GREEN);
+        Cuerpo.addMouseListener(this);
     }
 
     private void Cargar_Nodos() throws IOException {
@@ -128,9 +133,9 @@ public class Arbol {
             // Ax.setSize(10, 10);
             if (c % 2 == 0) {
                 if (j <= c / 2) {
-                    Ax.setLocation(a - j * Const_Separacion + Const_Separacion/2, b - Ax.getHeight() - 10);
+                    Ax.setLocation(a - j * Const_Separacion + Const_Separacion / 2, b - Ax.getHeight() - 10);
                 } else {
-                    Ax.setLocation(a + k * Const_Separacion - Const_Separacion/2, b - Ax.getHeight() - 10);
+                    Ax.setLocation(a + k * Const_Separacion - Const_Separacion / 2, b - Ax.getHeight() - 10);
                     k++;
                 }
             } else {
@@ -182,6 +187,42 @@ public class Arbol {
 
     public String getNombre() {
         return Nombre;
+    }
+
+    public void setAr_List(Arbol_Listener ar_List) {
+        Ar_List = ar_List;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Nodo Ax_Nd = null;
+        for (Nodo nodo : Nodos) {
+            if (nodo.getCuerpo().getBounds().contains(e.getPoint())) {
+                Ax_Nd = nodo;
+            }
+        }
+
+        if (Ax_Nd != null) {
+            Ar_List.onNodoSeleccionado(Ax_Nd);
+        } else {
+            Ar_List.onFondoDeArbolClickeado();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 
 }

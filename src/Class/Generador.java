@@ -7,7 +7,7 @@ public class Generador extends Nodo {
     public Generador(Nodo Nd, double gene) {
         super(Nd);
         GeneradoxTick = gene;
-        Nd.getCuerpo().setSize(25, 25);
+        Nd.getCuerpo().setSize(50, 50);
     }
 
     public Generador(int id, String nombre, String descripcion, boolean is_Activ, double gene) {

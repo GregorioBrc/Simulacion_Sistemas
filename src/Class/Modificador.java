@@ -9,7 +9,7 @@ public class Modificador extends Nodo {
         super(Nd);
         Valor_Modif = Valor;
         Descripcion_Modif = Descrp_Modif;
-        Nd.getCuerpo().setSize(20, 20);
+        Nd.getCuerpo().setSize(40, 40);
     }
 
     public Modificador(int id, String nombre, String descripcion, boolean is_Activ, double Valor, String Descrp_Modif) {

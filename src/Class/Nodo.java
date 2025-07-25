@@ -7,7 +7,7 @@ import java.util.Arrays;
 import javax.swing.JLabel;
 import javax.swing.event.MouseInputListener;
 
-public class Nodo  implements MouseInputListener{
+public class Nodo {
     private int Id;
     private String Nombre;
     private String Descripcion;
@@ -30,7 +30,6 @@ public class Nodo  implements MouseInputListener{
         id_Vertice = Nd.getId_Vertice();
         Cuerpo = Nd.Cuerpo;
         
-         Cuerpo.addMouseListener(this);
     }
 
     public Nodo(int id, String nombre, String descripcion, boolean is_Activ) {
@@ -108,27 +107,6 @@ public class Nodo  implements MouseInputListener{
     public void setSelect(boolean select) {
         Select = select;
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {System.out.println("Hola");}
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    @Override
-    public void mouseDragged(MouseEvent e) {}
-
-    @Override
-    public void mouseMoved(MouseEvent e) {}
 
     public void setCuerpo(JLabel cuerpo) {
         Cuerpo = cuerpo;
