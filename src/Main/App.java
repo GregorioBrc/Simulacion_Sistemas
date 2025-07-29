@@ -1,8 +1,7 @@
-import java.util.ArrayList;
+package Main;
 
-import App.MotorJuego;
-import App.Ventana;
-import Class.*;
+
+import controller.MotorJuego;
 
 public class App {
     public static void main(String[] args) throws Exception {

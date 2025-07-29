@@ -1,4 +1,4 @@
-package App;
+package view;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class Panel_Info_Generado extends JPanel {
         for (int i = 0; i < Tokens.length; i++) {
 
             J_Tokens.get(i).setText(Double.toString(Tokens[i / 2]));
-            
+
             if (Token_x_Seg != null && Token_x_Seg.length != 0) {
                 J_Tokens_x_Seg.get(i).setText(Double.toString(Token_x_Seg[i / 2]));
             }

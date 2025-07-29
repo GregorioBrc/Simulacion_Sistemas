@@ -1,6 +1,6 @@
-package App;
+package controller;
 
-import Class.Nodo;
+import model.Nodo;
 
 public interface Arbol_Listener {
     void onNodoSeleccionado(Nodo nodo);

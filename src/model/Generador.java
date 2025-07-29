@@ -1,4 +1,6 @@
-package Class;
+package model;
+
+import java.awt.Dimension;
 
 public class Generador extends Nodo {
 
@@ -7,7 +9,7 @@ public class Generador extends Nodo {
     public Generador(Nodo Nd, double gene) {
         super(Nd);
         GeneradoxTick = gene;
-        Nd.getCuerpo().setSize(50, 50);
+        setDm(new Dimension(50, 50));
     }
 
     public Generador(int id, String nombre, String descripcion, boolean is_Activ, double gene) {

@@ -1,4 +1,4 @@
-package Class;
+package model;
 
 public class Modificador_Click extends Modificador {
 

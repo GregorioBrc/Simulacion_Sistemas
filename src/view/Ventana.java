@@ -1,26 +1,22 @@
-package App;
+package view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
-import Class.Arbol;
-import Class.Nodo;
+import controller.Arbol_Listener;
+import model.Nodo;
 
 public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
 
     private JLayeredPane Cont = new JLayeredPane();
-    private Arbol Arb;
+    private ArbolPanel Tree;
     private Panel_Info_Nodo Pn_Info;
     private Panel_Info_Generado Pn_Gene;
 
-    public Ventana(Arbol Ab) {
+    public Ventana(ArbolPanel Ab) {
         setTitle("Juego de la Vida");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 800);
@@ -34,27 +30,8 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
 
         show();
 
-        Arb = Ab;
+        Tree = Ab;
         Ini_Components();
-    }
-
-    private void Ini_Components() {
-        Pn_Info = new Panel_Info_Nodo();
-        Pn_Info.setLocation(getWidth() / 2 - Pn_Info.getWidth() / 2, getHeight() - Pn_Info.getHeight() - 30);
-        Cont.add(Pn_Info, 0);
-
-        Pn_Gene = new Panel_Info_Generado(new String[] { "Token1"});
-        Pn_Gene.setLocation(getWidth() / 2 - Pn_Gene.getWidth() / 2, 10);
-        Cont.add(Pn_Gene, 1);
-
-        // Tree.setSize(1000, 1000);
-        JPanel Tree = Arb.getCuerpo();
-        Arb.setAr_List(this);
-
-        Tree.setLocation(this.getWidth() - Tree.getWidth() - 50, this.getHeight() - Tree.getHeight() - 50);
-        // System.out.println(this.getWidth() + ":" + this.getHeight());
-        // Tree.setBackground(Color.GREEN);
-        Cont.add(Tree, 2);
     }
 
     @Override
@@ -63,7 +40,6 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        JPanel Tree = Arb.getCuerpo();
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             Tree.setLocation((int) Tree.getLocation().getX(), (int) Tree.getLocation().getY() - 5);
 
@@ -84,10 +60,10 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
         return Pn_Info;
     }
 
-
     public Panel_Info_Generado getPn_Gene() {
         return Pn_Gene;
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -103,6 +79,24 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
     @Override
     public void onFondoDeArbolClickeado() {
         Pn_Info.setVisible(false);
+    }
+
+    private void Ini_Components() {
+        Pn_Info = new Panel_Info_Nodo();
+        Pn_Info.setLocation(getWidth() / 2 - Pn_Info.getWidth() / 2, getHeight() - Pn_Info.getHeight() - 30);
+        Cont.add(Pn_Info, 0);
+
+        Pn_Gene = new Panel_Info_Generado(new String[] { "Token1"});
+        Pn_Gene.setLocation(getWidth() / 2 - Pn_Gene.getWidth() / 2, 10);
+        Cont.add(Pn_Gene, 1);
+
+        // Tree.setSize(1000, 1000);
+        Tree.setAr_List(this);
+
+        Tree.setLocation(this.getWidth() - Tree.getWidth() - 50, this.getHeight() - Tree.getHeight() - 50);
+        // System.out.println(this.getWidth() + ":" + this.getHeight());
+        // Tree.setBackground(Color.GREEN);
+        Cont.add(Tree, 2);
     }
 
 }

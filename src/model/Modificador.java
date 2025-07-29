@@ -1,4 +1,6 @@
-package Class;
+package model;
+
+import java.awt.Dimension;
 
 public class Modificador extends Nodo {
 
@@ -9,7 +11,7 @@ public class Modificador extends Nodo {
         super(Nd);
         Valor_Modif = Valor;
         Descripcion_Modif = Descrp_Modif;
-        Nd.getCuerpo().setSize(40, 40);
+        setDm(new Dimension(40, 40));
     }
 
     public Modificador(int id, String nombre, String descripcion, boolean is_Activ, double Valor, String Descrp_Modif) {

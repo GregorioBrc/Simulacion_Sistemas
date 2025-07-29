@@ -1,4 +1,4 @@
-package App;
+package view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -7,7 +7,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Class.Nodo;
+import model.Nodo;
 
 public class Panel_Info_Nodo extends JPanel {
 

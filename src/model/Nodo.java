@@ -1,23 +1,21 @@
-package Class;
+package model;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import javax.swing.JLabel;
 
 public class Nodo {
     private int Id;
     private String Nombre;
     private String Descripcion;
     private boolean Is_Activ;
-    private JLabel Cuerpo;
     private boolean Select;
     private ArrayList<Nodo> Vertice;
     private int[] id_Vertice;
 
-    public int[] getId_Vertice() {
-        return id_Vertice;
-    }
+    private Point Location;
+    private Dimension Dm;
 
     public Nodo(Nodo Nd) {
         Id = Nd.getId();
@@ -26,8 +24,8 @@ public class Nodo {
         Is_Activ = Nd.isIs_Activ();
         Vertice = Nd.getVertice();
         id_Vertice = Nd.getId_Vertice();
-        Cuerpo = Nd.Cuerpo;
-        
+        Location = Nd.Location;
+        Dm = Nd.Dm;
     }
 
     public Nodo(int id, String nombre, String descripcion, boolean is_Activ) {
@@ -35,8 +33,9 @@ public class Nodo {
         Nombre = nombre;
         Descripcion = descripcion;
         Is_Activ = is_Activ;
-        Cuerpo = new JLabel();
         Vertice = new ArrayList<Nodo>();
+        Location = new Point();
+        Dm = new Dimension();
     }
 
     @Override
@@ -60,10 +59,6 @@ public class Nodo {
 
     public String getDescripcion() {
         return Descripcion;
-    }
-
-    public JLabel getCuerpo() {
-        return Cuerpo;
     }
 
     public boolean isIs_Activ() {
@@ -106,9 +101,28 @@ public class Nodo {
         Select = select;
     }
 
-    public void setCuerpo(JLabel cuerpo) {
-        Cuerpo = cuerpo;
+    public Point getLocation() {
+        return Location;
     }
 
-    
+    public void setLocation(Point location) {
+        Location = location;
+    }
+
+    public void setLocation(int x, int y) {
+        Location = new Point(x, y);
+    }
+
+    public int[] getId_Vertice() {
+        return id_Vertice;
+    }
+
+    public Dimension getDm() {
+        return Dm;
+    }
+
+    public void setDm(Dimension dm) {
+        Dm = dm;
+    }
+
 }
