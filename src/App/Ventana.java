@@ -1,9 +1,10 @@
 package App;
 
-import java.awt.Color;
-import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -16,7 +17,8 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
 
     private JLayeredPane Cont = new JLayeredPane();
     private Arbol Arb;
-    private Panel_Info Pn_Info;
+    private Panel_Info_Nodo Pn_Info;
+    private Panel_Info_Generado Pn_Gene;
 
     public Ventana(Arbol Ab) {
         setTitle("Juego de la Vida");
@@ -37,21 +39,27 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
     }
 
     private void Ini_Components() {
-        Pn_Info = new Panel_Info();
-        Pn_Info.setLocation(getWidth()/2 - Pn_Info.getWidth()/2, getHeight() - Pn_Info.getHeight() - 30);
-        Cont.add(Pn_Info,0);
+        Pn_Info = new Panel_Info_Nodo();
+        Pn_Info.setLocation(getWidth() / 2 - Pn_Info.getWidth() / 2, getHeight() - Pn_Info.getHeight() - 30);
+        Cont.add(Pn_Info, 0);
+
+        Pn_Gene = new Panel_Info_Generado(new String[] { "Token1"});
+        Pn_Gene.setLocation(getWidth() / 2 - Pn_Gene.getWidth() / 2, 10);
+        Cont.add(Pn_Gene, 1);
 
         // Tree.setSize(1000, 1000);
         JPanel Tree = Arb.getCuerpo();
         Arb.setAr_List(this);
+
         Tree.setLocation(this.getWidth() - Tree.getWidth() - 50, this.getHeight() - Tree.getHeight() - 50);
-        System.out.println(this.getWidth() + ":" + this.getHeight());
+        // System.out.println(this.getWidth() + ":" + this.getHeight());
         // Tree.setBackground(Color.GREEN);
-        Cont.add(Tree,1);
+        Cont.add(Tree, 2);
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -70,6 +78,15 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
         } else if (e.getKeyChar() == KeyEvent.VK_SPACE) {
 
         }
+    }
+
+    public Panel_Info_Nodo getPn_Info() {
+        return Pn_Info;
+    }
+
+
+    public Panel_Info_Generado getPn_Gene() {
+        return Pn_Gene;
     }
 
     @Override

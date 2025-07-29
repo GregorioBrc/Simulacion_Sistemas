@@ -20,10 +20,14 @@ import App.Arbol_Listener;
 public class Arbol implements MouseListener {
 
     private final int Const_Separacion = 100;
+
     private double Total_GeneraxTick;
+    private double Total_Tokens;
+
+    private String Nombre;
+
     private JPanel Cuerpo;
     private ArrayList<Nodo> Nodos;
-    private String Nombre;
     private Arbol_Listener Ar_List;
 
     public Arbol(String Nm) throws IOException {
@@ -130,7 +134,6 @@ public class Arbol implements MouseListener {
             JLabel Ax = Nodos.get(i).getCuerpo();
             Ax.setBackground(Color.BLACK);
             Ax.setOpaque(true);
-            // Ax.setSize(10, 10);
             if (c % 2 == 0) {
                 if (j <= c / 2) {
                     Ax.setLocation(a - j * Const_Separacion + Const_Separacion / 2, b - Ax.getHeight() - 10);
@@ -169,8 +172,20 @@ public class Arbol implements MouseListener {
         }
     }
 
+    public void Actualizar_Tokens(){
+        Total_Tokens += Total_GeneraxTick;
+    }
+
     public void setNodos(ArrayList<Nodo> nodos) {
         Nodos = nodos;
+    }
+
+    public double getTotal_Tokens() {
+        return Total_Tokens;
+    }
+
+    public void setTotal_Tokens(double total_Tokens) {
+        Total_Tokens = total_Tokens;
     }
 
     public double getTotal_GeneraxTick() {

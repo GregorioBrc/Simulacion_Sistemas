@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 
 import Class.Nodo;
 
-public class Panel_Info extends JPanel {
+public class Panel_Info_Nodo extends JPanel {
 
     private JLabel[] Lbs;
 
-    public Panel_Info() {
+    public Panel_Info_Nodo() {
         setSize(400, 150);
         setLayout(null);
         setBackground(Color.BLUE);

@@ -1,11 +1,9 @@
 package Class;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JLabel;
-import javax.swing.event.MouseInputListener;
 
 public class Nodo {
     private int Id;
