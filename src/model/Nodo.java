@@ -7,10 +7,19 @@ import java.util.Arrays;
 
 public class Nodo {
     private int Id;
+    
     private String Nombre;
     private String Descripcion;
+    private String Token;
+    
     private boolean Is_Activ;
-    private boolean Select;
+    
+    private double Costo;
+
+    public double getCosto() {
+        return Costo;
+    }
+
     private ArrayList<Nodo> Vertice;
     private int[] id_Vertice;
 
@@ -24,13 +33,16 @@ public class Nodo {
         Is_Activ = Nd.isIs_Activ();
         Vertice = Nd.getVertice();
         id_Vertice = Nd.getId_Vertice();
+        Token = Nd.getToken();
+        Costo = Nd.getCosto();
         Location = Nd.Location;
         Dm = Nd.Dm;
     }
 
-    public Nodo(int id, String nombre, String descripcion, boolean is_Activ) {
+    public Nodo(int id, String token, String nombre, String descripcion, boolean is_Activ, double costo) {
         Id = id;
         Nombre = nombre;
+        Token = token;
         Descripcion = descripcion;
         Is_Activ = is_Activ;
         Vertice = new ArrayList<Nodo>();
@@ -46,7 +58,7 @@ public class Nodo {
             Ax_Aris[i] = Vertice.get(i).Id;
         }
 
-        return String.format("%d|%s|%s|%b|%s", Id, Nombre, Descripcion, Is_Activ, Arrays.toString(Ax_Aris));
+        return String.format("%d|%s|%s|%s|%b|%s", Id, Token, Nombre, Descripcion, Is_Activ, Arrays.toString(Ax_Aris));
     }
 
     public int getId() {
@@ -93,14 +105,6 @@ public class Nodo {
         this.id_Vertice = id_Vertice;
     }
 
-    public boolean isSelect() {
-        return Select;
-    }
-
-    public void setSelect(boolean select) {
-        Select = select;
-    }
-
     public Point getLocation() {
         return Location;
     }
@@ -123,6 +127,14 @@ public class Nodo {
 
     public void setDm(Dimension dm) {
         Dm = dm;
+    }
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String token) {
+        Token = token;
     }
 
 }

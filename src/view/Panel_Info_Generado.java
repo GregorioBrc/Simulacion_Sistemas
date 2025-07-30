@@ -13,7 +13,7 @@ public class Panel_Info_Generado extends JPanel {
     private ArrayList<JLabel> J_Tokens_x_Seg;
     private ArrayList<JLabel> J_Nombre_Token;
 
-    public Panel_Info_Generado(String[] Nom) {
+    public Panel_Info_Generado(ArrayList<String> Nom) {
         J_Tokens = new ArrayList<JLabel>();
         J_Tokens_x_Seg = new ArrayList<JLabel>();
         J_Nombre_Token = new ArrayList<JLabel>();
@@ -21,8 +21,8 @@ public class Panel_Info_Generado extends JPanel {
         Iniciar(Nom);
     }
 
-    private void Iniciar(String[] Nom_a) {
-        int N = Nom_a.length;
+    private void Iniciar(ArrayList<String> Nom_a) {
+        int N = Nom_a.size();
 
         setSize(200, 100);
         setBackground(Color.RED);
@@ -38,7 +38,7 @@ public class Panel_Info_Generado extends JPanel {
             if (i % 3 == 0) {
                 Ax.setBackground(Color.orange);
                 Ax.setLocation(i / 3 * (Ax.getWidth() + 10) + 5, 5);
-                Ax.setText(Nom_a[i / 3]);
+                Ax.setText(Nom_a.get(i / 3));
                 J_Nombre_Token.add(Ax);
 
             } else if (i % 3 == 1) {
@@ -65,7 +65,7 @@ public class Panel_Info_Generado extends JPanel {
             J_Tokens.get(i).setText(Double.toString(Tokens[i / 2]));
 
             if (Token_x_Seg != null && Token_x_Seg.length != 0) {
-                J_Tokens_x_Seg.get(i).setText(Double.toString(Token_x_Seg[i / 2]));
+                J_Tokens_x_Seg.get(i).setText(Double.toString(Token_x_Seg[i / 2]) + " T/s");
             }
 
         }

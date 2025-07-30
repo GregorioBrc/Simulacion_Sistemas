@@ -10,21 +10,25 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import Misc.Tokens;
 import Misc.Utils;
 
 public class Arbol {
-    private double Total_GeneraxTick;
-    private double Total_Tokens;
-
+    private ArrayList<Double> Total_GeneraxTick;
+    private ArrayList<String> Token_a_Generar;
     private String Nombre;
 
     private JPanel Cuerpo;
+
     private ArrayList<Nodo> Nodos;
 
     public Arbol(String Nm) throws IOException {
         Nodos = new ArrayList<Nodo>();
+        Token_a_Generar = new ArrayList<String>();
+        Total_GeneraxTick = new ArrayList<Double>();
         Nombre = Nm;
         Cargar_Nodos();
+        Cargar_Tokens();
         Cargar_Vertices();
         Calcular_Total();
     }
@@ -57,23 +61,11 @@ public class Arbol {
         }
     }
 
-    public void Actualizar_Tokens(){
-        Total_Tokens += Total_GeneraxTick;
-    }
-
     public void setNodos(ArrayList<Nodo> nodos) {
         Nodos = nodos;
     }
 
-    public double getTotal_Tokens() {
-        return Total_Tokens;
-    }
-
-    public void setTotal_Tokens(double total_Tokens) {
-        Total_Tokens = total_Tokens;
-    }
-
-    public double getTotal_GeneraxTick() {
+    public ArrayList<Double> getTotal_GeneraxTick() {
         return Total_GeneraxTick;
     }
 
@@ -89,6 +81,26 @@ public class Arbol {
         return Nombre;
     }
 
+    public ArrayList<String> getToken_a_Generar() {
+        return Token_a_Generar;
+    }
+
+    public void Cargar_Tokens() {
+        boolean Enc;
+        for (int i = 0; i < Nodos.size(); i++) {
+            Enc = false;
+            for (int j = 0; j < Token_a_Generar.size(); j++) {
+                if (Token_a_Generar.get(j).equals(Nodos.get(i).getToken())) {
+                    Enc = true;
+                    break;
+                }
+            }
+            if (!Enc) {
+                Token_a_Generar.add(Nodos.get(i).getToken());
+            }
+        }
+    }
+
     private void Cargar_Nodos() throws IOException {
         File Fl = new File("Nd_" + Nombre + ".dt");
         if (Fl.exists()) {
@@ -98,19 +110,26 @@ public class Arbol {
             String[] Spl;
 
             while ((Ax = Br.readLine()) != null && Ax.length() != 0) {
+                if (Ax.startsWith("//")) {
+                    continue;
+                }
+                ;
                 Spl = Ax.split("\\|");
-                Nodo Ax_Nd = new Nodo(Integer.parseInt(Spl[1]), Spl[2], Spl[3], Boolean.parseBoolean(Spl[4]));
-                Ax_Nd.setId_Vertice(Utils.String_To_Array(Spl[5]));
+                // Tipo_nodo|id|id_token|Costo|titulo|Descripcion|is_Activo|Vertices|
+
+                Nodo Ax_Nd = new Nodo(Integer.parseInt(Spl[1]), Tokens.tokens[Integer.parseInt(Spl[2])], Spl[4], Spl[5],
+                        Boolean.parseBoolean(Spl[6]), Double.parseDouble(Spl[3]));
+                Ax_Nd.setId_Vertice(Utils.String_To_Array(Spl[7]));
 
                 if (Spl[0].equals("Nd_Gene")) {
-                    Nodos.add(new Generador(Ax_Nd, Utils.Parse_Dou(Spl[6])));
+                    Nodos.add(new Generador(Ax_Nd, Utils.Parse_Dou(Spl[8])));
 
                 } else if (Spl[0].equals("Nd_Click")) {
-                    Nodos.add(new Modificador_Click(Ax_Nd, Utils.Parse_Dou(Spl[6]), Spl[7]));
+                    Nodos.add(new Modificador_Click(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]));
 
                 } else if (Spl[0].equals("Nd_Modi")) {
-                    Modificador_Nodo a = new Modificador_Nodo(Ax_Nd, Utils.Parse_Dou(Spl[6]), Spl[7]);
-                    a.setId_Nodos_Afect(Utils.String_To_Array(Spl[8]));
+                    Modificador_Nodo a = new Modificador_Nodo(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]);
+                    a.setId_Nodos_Afect(Utils.String_To_Array(Spl[10]));
                     Nodos.add(a);
                 }
             }
@@ -140,13 +159,31 @@ public class Arbol {
         }
     }
 
-    private void Calcular_Total() {
-        Total_GeneraxTick = 0;
+    public void Calcular_Total() {
+
+        Total_GeneraxTick.clear();
+        for (int i = 0; i < Token_a_Generar.size(); i++) {
+            Total_GeneraxTick.add(0.0);
+        }
+
         for (int i = 0; i < Nodos.size(); i++) {
-            if (Nodos.get(i) instanceof Generador) {
-                Total_GeneraxTick += ((Generador) Nodos.get(i)).getGeneradoxTick();
+            for (int j = 0; j < Token_a_Generar.size(); j++) {
+                if (Nodos.get(i) instanceof Generador && Nodos.get(i).getToken() == Token_a_Generar.get(j)) {
+                    Double Ax = Total_GeneraxTick.get(j);
+                    Ax += ((Generador) Nodos.get(i)).getGeneradoxTick();
+                    Total_GeneraxTick.set(j, Ax);
+                }
             }
         }
+    }
+
+    public double Get_Generado_Token(String ax) {
+        for (int i = 0; i < Token_a_Generar.size(); i++) {
+            if (Token_a_Generar.get(i).equals(ax)) {
+                return Total_GeneraxTick.get(i);
+            }
+        }
+        return 0;
     }
 
 }

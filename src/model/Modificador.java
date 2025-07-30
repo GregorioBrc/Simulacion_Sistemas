@@ -14,12 +14,6 @@ public class Modificador extends Nodo {
         setDm(new Dimension(40, 40));
     }
 
-    public Modificador(int id, String nombre, String descripcion, boolean is_Activ, double Valor, String Descrp_Modif) {
-        super(id, nombre, descripcion, is_Activ);
-        Valor_Modif = Valor;
-        Descripcion_Modif = Descrp_Modif;
-    }
-
     public double getValor_Modif() {
         return Valor_Modif;
     }

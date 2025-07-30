@@ -86,7 +86,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
         Pn_Info.setLocation(getWidth() / 2 - Pn_Info.getWidth() / 2, getHeight() - Pn_Info.getHeight() - 30);
         Cont.add(Pn_Info, 0);
 
-        Pn_Gene = new Panel_Info_Generado(new String[] { "Token1"});
+        Pn_Gene = new Panel_Info_Generado((Tree.getTree().getToken_a_Generar()));
         Pn_Gene.setLocation(getWidth() / 2 - Pn_Gene.getWidth() / 2, 10);
         Cont.add(Pn_Gene, 1);
 

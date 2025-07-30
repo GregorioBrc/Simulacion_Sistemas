@@ -10,11 +10,6 @@ public class Modificador_Nodo extends Modificador {
 
     public Modificador_Nodo(Nodo Nd, double Valor, String Descrp_Modif) {
         super(Nd, Valor, Descrp_Modif);
-    }
-
-    public Modificador_Nodo(int id, String nombre, String descripcion, boolean is_Activ, double Valor,
-            String Descrp_Modif) {
-        super(id, nombre, descripcion, is_Activ, Valor, Descrp_Modif);
         Nodos_Afect = new ArrayList<Nodo>();
     }
 
