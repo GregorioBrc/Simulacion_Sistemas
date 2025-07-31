@@ -2,7 +2,7 @@
 // Tipos: Nd_Gene (Generador), Nd_Modi (Modificador de Nodo), Nd_Click (Modificador de Click)
 // Datos_Extra para Nd_Gene: |Generado_x_tick
 // Datos_Extra para Nd_Modi: |Valor_Modificacion|Descripcion_Modificacion|Nodos_Afectados (ID)
-// Datos_Extra para Nd_Click: |Valor_Modificacion|Descripcion_Modificacion
+// Datos_Extra para Nd_Clic: |Valor_Modificacion|Descripcion_Modificacion
 
 // === ETAPA 1: ORIGEN DE LA VIDA ===
 Nd_Gene|0|0|0|Sopa Primordial|El caldo cósmico donde todo comienza.|false|[1]|0.1

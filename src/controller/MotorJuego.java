@@ -7,16 +7,19 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import Misc.Tokens;
 import model.Arbol;
 import model.Billetera;
+import model.Modificador_Click;
 import model.Nodo;
 import view.*;
 
-public class MotorJuego implements ActionListener, Compra_Listener {
+public class MotorJuego implements ActionListener, Compra_Listener, Click_Listener {
     private Ventana Vt;
     private Billetera Bill;
     private ArrayList<ArbolPanel> Arbs;
     private int Arbol_Indx = 0;
+    private double Click_Token_Value = 1;
     Timer Tiker;
 
     public MotorJuego() throws IOException {
@@ -36,6 +39,7 @@ public class MotorJuego implements ActionListener, Compra_Listener {
     private void Cargar_Listeners() {
         for (ArbolPanel Arb : Arbs) {
             Arb.setCom_Listener(this);
+            Arb.setCli_List(this);
         }
     }
 
@@ -74,6 +78,17 @@ public class MotorJuego implements ActionListener, Compra_Listener {
             Actualizar_Tokens();
             Actualizar_Info_gene();
         }
+    }
+
+    @Override
+    public void Click_Token() {
+        Bill.Sumar_Tokens(Tokens.tokens[0], Click_Token_Value);
+        Actualizar_Info_gene();
+    }
+
+    @Override
+    public void Modi_Click_Token(Modificador_Click Nd) {
+        Click_Token_Value *= Nd.getValor_Modif();
     }
 
 }

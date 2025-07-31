@@ -10,9 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controller.Arbol_Listener;
+import controller.Click_Listener;
 import controller.Compra_Listener;
 import model.Arbol;
 import model.Generador;
+import model.Modificador_Click;
 import model.Modificador_Nodo;
 import model.Nodo;
 
@@ -24,6 +26,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
     private JLabel Node_Select_Jlabel;
     private Nodo Node_Select;
     private Compra_Listener Com_Listener;
+    private Click_Listener Cli_List;
 
     public ArbolPanel(String Nm) {
         try {
@@ -67,6 +70,10 @@ public class ArbolPanel extends JPanel implements MouseListener {
             }
 
         } else {
+            if (Node_Select == null) {
+                Cli_List.Click_Token();
+            }
+
             Node_Select_Jlabel = null;
             Node_Select = null;
             Ar_List.onFondoDeArbolClickeado();
@@ -103,6 +110,10 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
     public void setCom_Listener(Compra_Listener com_Listener) {
         Com_Listener = com_Listener;
+    }
+
+    public void setCli_List(Click_Listener cli_List) {
+        Cli_List = cli_List;
     }
 
     private void IniciarComponent() {
@@ -171,6 +182,11 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
         if (Nd instanceof Modificador_Nodo) {
             Asignar_Modificador((Modificador_Nodo) Nd);
+        }
+
+        if (Nd instanceof Modificador_Click) {
+            Cli_List.Modi_Click_Token((Modificador_Click)Nd);
+            return;
         }
 
         Tree.Calcular_Total();

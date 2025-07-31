@@ -127,7 +127,7 @@ public class Arbol {
                 if (Spl[0].equals("Nd_Gene")) {
                     Nodos.add(new Generador(Ax_Nd, Utils.Parse_Dou(Spl[8])));
 
-                } else if (Spl[0].equals("Nd_Click")) {
+                } else if (Spl[0].equals("Nd_Clic")) {
                     Nodos.add(new Modificador_Click(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]));
 
                 } else if (Spl[0].equals("Nd_Modi")) {
