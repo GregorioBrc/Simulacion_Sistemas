@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import controller.Arbol_Listener;
 import controller.Compra_Listener;
 import model.Arbol;
+import model.Modificador_Nodo;
 import model.Nodo;
 
 public class ArbolPanel extends JPanel implements MouseListener {
@@ -41,15 +42,23 @@ public class ArbolPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         Nodo Ax_Nd = null;
         for (Nodo nodo : Tree.getNodos()) {
-            if (new Rectangle(nodo.getLocation(), nodo.getDm()).contains(e.getPoint()) && nodo.isIs_Activ()) {
+            if (new Rectangle(nodo.getLocation(), nodo.getDm()).contains(e.getPoint())) {
                 Ax_Nd = nodo;
+            }
+        }
+
+        if (Ax_Nd != null) {
+            if (!getComponentAt(Ax_Nd.getLocation()).isVisible()) {
+                Ax_Nd = null;
             }
         }
 
         if (Ax_Nd != null) {
 
             if (Node_Select == Ax_Nd) {
-                Com_Listener.Prerequisitos(Node_Select);
+                if (!Node_Select.isIs_Activ()) {
+                    Com_Listener.Prerequisitos(Node_Select);
+                }
             } else {
                 Node_Select_Jlabel = (JLabel) (getComponentAt(Ax_Nd.getLocation()));
                 Node_Select = Ax_Nd;
@@ -131,7 +140,11 @@ public class ArbolPanel extends JPanel implements MouseListener {
                     Nd_ax.setLocation(a, b - Ax.getHeight() - 10);
                 }
             }
-            Ax.setVisible(Nd_ax.isIs_Activ());
+
+            if (i != 0) {
+                Ax.setVisible(Nd_ax.isIs_Activ());
+            }
+
             Ax.setLocation(Nd_ax.getLocation());
             if (j == c) {
                 b -= Const_Separacion;
@@ -148,14 +161,23 @@ public class ArbolPanel extends JPanel implements MouseListener {
         JLabel ax;
         ax = ((JLabel) getComponentAt(Nd.getLocation()));
         ax.setBackground(Color.BLACK);
+        Nd.setIs_Activ(true);
         for (Nodo N : Nd.getVertice()) {
             ax = ((JLabel) getComponentAt(N.getLocation()));
             ax.setVisible(true);
             ax.setBackground(Color.gray);
-            N.setIs_Activ(true);
+            // N.setIs_Activ(true);
+        }
+
+        if (Nd instanceof Modificador_Nodo) {
+            Asignar_Modificador((Modificador_Nodo) Nd);
         }
 
         Tree.Calcular_Total();
+    }
+
+    private void Asignar_Modificador(Modificador_Nodo nd) {
+        
     }
 
 }

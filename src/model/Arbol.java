@@ -1,12 +1,11 @@
 package model;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JPanel;
 
@@ -104,17 +103,22 @@ public class Arbol {
     private void Cargar_Nodos() throws IOException {
         File Fl = new File("Nd_" + Nombre + ".dt");
         if (Fl.exists()) {
-            BufferedReader Br = new BufferedReader(new FileReader(Fl));
-
+            Scanner Sc = new Scanner(Fl);
             String Ax = "";
             String[] Spl;
+            while (true) {
+                Ax = Sc.nextLine();
 
-            while ((Ax = Br.readLine()) != null && Ax.length() != 0) {
-                if (Ax.startsWith("//")) {
+                if (!Sc.hasNextLine()) {
+                    break;
+                }
+                if (Ax.startsWith("//") || Ax.equals("")) {
                     continue;
                 }
-                ;
+                
+                
                 Spl = Ax.split("\\|");
+                System.out.println(Spl[1]);
                 // Tipo_nodo|id|id_token|Costo|titulo|Descripcion|is_Activo|Vertices|
 
                 Nodo Ax_Nd = new Nodo(Integer.parseInt(Spl[1]), Tokens.tokens[Integer.parseInt(Spl[2])], Spl[4], Spl[5],
@@ -133,8 +137,7 @@ public class Arbol {
                     Nodos.add(a);
                 }
             }
-
-            Br.close();
+            Sc.close();
         } else {
             Nodos = new ArrayList<>();
             System.out.println("Nodos no encontrado. Iniciando lista vacía.");
@@ -168,7 +171,7 @@ public class Arbol {
 
         for (int i = 0; i < Nodos.size(); i++) {
             for (int j = 0; j < Token_a_Generar.size(); j++) {
-                if (Nodos.get(i) instanceof Generador && Nodos.get(i).getToken() == Token_a_Generar.get(j)) {
+                if (Nodos.get(i) instanceof Generador && Nodos.get(i).getToken() == Token_a_Generar.get(j) && Nodos.get(i).isIs_Activ()) {
                     Double Ax = Total_GeneraxTick.get(j);
                     Ax += ((Generador) Nodos.get(i)).getGeneradoxTick();
                     Total_GeneraxTick.set(j, Ax);

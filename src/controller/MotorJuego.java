@@ -63,9 +63,10 @@ public class MotorJuego implements ActionListener, Compra_Listener {
 
     @Override
     public void Prerequisitos(Nodo Nd) {
-        if (Nd.getCosto() < Bill.getCantidad(Nd.getToken())) {
+        if (Nd.getCosto() <= Bill.getCantidad(Nd.getToken())) {
             Bill.Restar(Nd.getToken(), Nd.getCosto());
             Arbs.get(Arbol_Indx).Activar_Nodo(Nd);
+            Actualizar_Tokens();
         }
     }
 
