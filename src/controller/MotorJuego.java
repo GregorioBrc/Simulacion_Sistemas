@@ -77,6 +77,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
             Arbs.get(Arbol_Indx).Activar_Nodo(Nd);
             Actualizar_Tokens();
             Actualizar_Info_gene();
+            Vt.repaint();
         }
     }
 

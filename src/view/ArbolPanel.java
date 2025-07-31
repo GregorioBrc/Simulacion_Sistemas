@@ -6,6 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
+import java.awt.BasicStroke;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -185,7 +190,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
         }
 
         if (Nd instanceof Modificador_Click) {
-            Cli_List.Modi_Click_Token((Modificador_Click)Nd);
+            Cli_List.Modi_Click_Token((Modificador_Click) Nd);
             return;
         }
 
@@ -196,6 +201,38 @@ public class ArbolPanel extends JPanel implements MouseListener {
         for (Nodo N : nd.getNodos_Afect()) {
             if (N instanceof Generador) {
                 ((Generador) N).Modificar_Gene(nd);
+            }
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        for (Nodo nodoOrigen : Tree.getNodos()) {
+            Point origen = nodoOrigen.getLocation();
+            int x1 = origen.x + nodoOrigen.getDm().width / 2;
+            int y1 = origen.y + nodoOrigen.getDm().height / 2;
+
+            for (Nodo nodoDestino : nodoOrigen.getVertice()) {
+                Point destino = nodoDestino.getLocation();
+                int x2 = destino.x + nodoDestino.getDm().width / 2;
+                int y2 = destino.y + nodoDestino.getDm().height / 2;
+
+                if (!nodoDestino.isIs_Activ()) {
+                    g2d.setColor(Color.GRAY);
+
+                    BasicStroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+                            new float[] { 9 }, 0);
+                    g2d.setStroke(dashed);
+                } else {
+                    g2d.setColor(Color.DARK_GRAY);
+                    g2d.setStroke(new BasicStroke(3));
+                }
+
+                if (nodoOrigen.isIs_Activ()) {
+                    g2d.drawLine(x1, y1, x2, y2);
+                }
             }
         }
     }
