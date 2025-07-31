@@ -117,7 +117,6 @@ public class Arbol {
                 }
 
                 Spl = Ax.split("\\|");
-                System.out.println(Spl[1]);
                 // Tipo_nodo|id|id_token|Costo|titulo|Descripcion|is_Activo|Vertices|
 
                 Nodo Ax_Nd = new Nodo(Integer.parseInt(Spl[1]), Tokens.tokens[Integer.parseInt(Spl[2])], Spl[4], Spl[5],
