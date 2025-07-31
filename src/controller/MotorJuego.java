@@ -10,6 +10,7 @@ import javax.swing.Timer;
 import Misc.Tokens;
 import model.Arbol;
 import model.Billetera;
+import model.Generador;
 import model.Modificador_Click;
 import model.Nodo;
 import view.*;
@@ -36,6 +37,42 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         Tiker.start();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Bill.tick();
+        Actualizar_Info_gene();
+    }
+
+    @Override
+    public void Prerequisitos(Nodo Nd, int Modo) {
+        if (Nd.getCosto() <= Bill.getCantidad(Nd.getToken())) {
+            Bill.Restar(Nd.getToken(), Nd.getCosto());
+            
+            if (Modo == 0) {
+                Arbs.get(Arbol_Indx).Activar_Nodo(Nd);
+            }
+            else if (Modo == 1) {
+                Arbs.get(Arbol_Indx).Comprar_Generador(((Generador)Nd));
+                Vt.getPn_Info().Cargar_Nodo(Nd);
+            }
+
+            Actualizar_Tokens();
+            Actualizar_Info_gene();
+            Vt.repaint();
+        }
+    }
+
+    @Override
+    public void Click_Token() {
+        Bill.Sumar_Tokens(Tokens.tokens[0], Click_Token_Value);
+        Actualizar_Info_gene();
+    }
+
+    @Override
+    public void Modi_Click_Token(Modificador_Click Nd) {
+        Click_Token_Value *= Nd.getValor_Modif();
+    }
+
     private void Cargar_Listeners() {
         for (ArbolPanel Arb : Arbs) {
             Arb.setCom_Listener(this);
@@ -59,37 +96,9 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Bill.tick();
-        Actualizar_Info_gene();
-    }
-
     private void Actualizar_Info_gene() {
         ArrayList<String> Ax_Noms = Arbs.get(Arbol_Indx).getTree().getToken_a_Generar();
         Vt.getPn_Gene().Actualizar(Bill.getCantidades(Ax_Noms), Bill.getGeneracions(Ax_Noms));
-    }
-
-    @Override
-    public void Prerequisitos(Nodo Nd) {
-        if (Nd.getCosto() <= Bill.getCantidad(Nd.getToken())) {
-            Bill.Restar(Nd.getToken(), Nd.getCosto());
-            Arbs.get(Arbol_Indx).Activar_Nodo(Nd);
-            Actualizar_Tokens();
-            Actualizar_Info_gene();
-            Vt.repaint();
-        }
-    }
-
-    @Override
-    public void Click_Token() {
-        Bill.Sumar_Tokens(Tokens.tokens[0], Click_Token_Value);
-        Actualizar_Info_gene();
-    }
-
-    @Override
-    public void Modi_Click_Token(Modificador_Click Nd) {
-        Click_Token_Value *= Nd.getValor_Modif();
     }
 
 }

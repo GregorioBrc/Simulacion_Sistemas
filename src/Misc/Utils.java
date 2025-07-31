@@ -1,5 +1,7 @@
 package Misc;
 
+import java.text.DecimalFormat;
+
 public class Utils {
 
     public static double Parse_Dou(String St) {
@@ -17,7 +19,7 @@ public class Utils {
         if (Ar.equals("")) {
             return new int[]{};
         }
-        
+
         String[] Ax = Ar.split(",");
         int[] Ax_int = new int[Ax.length];
 
@@ -28,5 +30,14 @@ public class Utils {
         return Ax_int;
     }
 
-    
+    public static String Formatear_Num(double Num){
+        if (Num > 1e5) {
+            return String.format("%.2e", Num);
+        } else {
+            DecimalFormat df = new DecimalFormat("#,###.###");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+            return df.format(Num);
+        }
+    }
 }

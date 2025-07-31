@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.text.Utilities;
+
+import Misc.Utils;
 
 public class Panel_Info_Generado extends JPanel {
 
@@ -62,10 +65,10 @@ public class Panel_Info_Generado extends JPanel {
     public void Actualizar(double[] Tokens, double[] Token_x_Seg) {
         for (int i = 0; i < Tokens.length; i++) {
 
-            J_Tokens.get(i).setText(Double.toString(Tokens[i]));
+            J_Tokens.get(i).setText(Utils.Formatear_Num(Tokens[i]));
 
             if (Token_x_Seg != null && Token_x_Seg.length != 0) {
-                J_Tokens_x_Seg.get(i).setText(Double.toString(Token_x_Seg[i]) + " T/s");
+                J_Tokens_x_Seg.get(i).setText(Utils.Formatear_Num(Token_x_Seg[i]) + " T/s");
             }
 
         }

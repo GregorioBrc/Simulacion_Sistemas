@@ -14,18 +14,14 @@ public class Nodo {
     
     private boolean Is_Activ;
     
-    private double Costo;
-
-    public double getCosto() {
-        return Costo;
-    }
+    protected double Costo;
 
     private ArrayList<Nodo> Vertice;
+
     private int[] id_Vertice;
-
     private Point Location;
-    private Dimension Dm;
 
+    private Dimension Dm;
     public Nodo(Nodo Nd) {
         Id = Nd.getId();
         Nombre = Nd.getNombre();
@@ -49,6 +45,10 @@ public class Nodo {
         Vertice = new ArrayList<Nodo>();
         Location = new Point();
         Dm = new Dimension();
+    }
+
+    public double getCosto() {
+        return Costo;
     }
 
     @Override

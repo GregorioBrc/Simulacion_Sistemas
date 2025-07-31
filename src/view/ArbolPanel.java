@@ -25,8 +25,10 @@ import model.Nodo;
 
 public class ArbolPanel extends JPanel implements MouseListener {
 
-    private Arbol Tree;
     private final int Const_Separacion = 100;
+    private final double Const_Grand = 1.25;
+
+    private Arbol Tree;
     private Arbol_Listener Ar_List;
     private JLabel Node_Select_Jlabel;
     private Nodo Node_Select;
@@ -66,17 +68,25 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
             if (Node_Select == Ax_Nd) {
                 if (!Node_Select.isIs_Activ()) {
-                    Com_Listener.Prerequisitos(Node_Select);
+                    Com_Listener.Prerequisitos(Node_Select, 0);
+                } else if (Ax_Nd instanceof Generador) {
+                    Com_Listener.Prerequisitos(Node_Select, 1);
                 }
             } else {
+                if (Node_Select_Jlabel != null) {
+                    DeSelecionar_Nodo(Node_Select_Jlabel);
+                }
                 Node_Select_Jlabel = (JLabel) (getComponentAt(Ax_Nd.getLocation()));
                 Node_Select = Ax_Nd;
+                Selecionar_Nodo(Node_Select_Jlabel);
                 Ar_List.onNodoSeleccionado(Ax_Nd);
             }
 
         } else {
             if (Node_Select == null) {
                 Cli_List.Click_Token();
+            } else {
+                DeSelecionar_Nodo(Node_Select_Jlabel);
             }
 
             Node_Select_Jlabel = null;
@@ -86,16 +96,20 @@ public class ArbolPanel extends JPanel implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 
     public Arbol getTree() {
         return Tree;
@@ -115,6 +129,87 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
     public void setCli_List(Click_Listener cli_List) {
         Cli_List = cli_List;
+    }
+
+    public void Activar_Nodo(Nodo Nd) {
+        JLabel ax;
+        ax = ((JLabel) getComponentAt(Nd.getLocation()));
+        ax.setBackground(Color.BLACK);
+        Nd.setIs_Activ(true);
+
+        if (Nd instanceof Generador) {
+            ((Generador) Nd).Comprar_Uni();
+            ax.setForeground(Color.white);
+            ax.setText(((Generador) Nd).getCant() + "");
+        }
+
+        if (Nd instanceof Modificador_Nodo) {
+            Asignar_Modificador((Modificador_Nodo) Nd);
+        }
+
+        if (Nd instanceof Modificador_Click) {
+            Cli_List.Modi_Click_Token((Modificador_Click) Nd);
+            return;
+        }
+
+        Tree.Calcular_Total();
+
+        for (Nodo N : Nd.getVertice()) {
+            ax = ((JLabel) getComponentAt(N.getLocation()));
+            ax.setVisible(true);
+            ax.setBackground(Color.gray);
+            
+        }
+    }
+
+    public void Comprar_Generador(Generador Nd) {
+        Nd.Comprar_Uni();
+
+        JLabel ax = ((JLabel) getComponentAt(Nd.getLocation()));
+        ax.setForeground(Color.white);
+        ax.setText(Nd.getCant() + "");
+
+        Tree.Calcular_Total();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        for (Nodo nodoOrigen : Tree.getNodos()) {
+            Point origen = nodoOrigen.getLocation();
+            int x1 = origen.x + nodoOrigen.getDm().width / 2;
+            int y1 = origen.y + nodoOrigen.getDm().height / 2;
+
+            for (Nodo nodoDestino : nodoOrigen.getVertice()) {
+                Point destino = nodoDestino.getLocation();
+                int x2 = destino.x + nodoDestino.getDm().width / 2;
+                int y2 = destino.y + nodoDestino.getDm().height / 2;
+
+                if (!nodoDestino.isIs_Activ()) {
+                    g2d.setColor(Color.GRAY);
+
+                    BasicStroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+                            new float[] { 9 }, 0);
+                    g2d.setStroke(dashed);
+                } else {
+                    g2d.setColor(Color.DARK_GRAY);
+                    g2d.setStroke(new BasicStroke(3));
+                }
+
+                if (nodoOrigen.isIs_Activ()) {
+                    g2d.drawLine(x1, y1, x2, y2);
+                }
+            }
+        }
+    }
+
+    private void Selecionar_Nodo(JLabel Nd_Jla) {
+        Nd_Jla.setSize((int) (Nd_Jla.getWidth() * Const_Grand), (int) (Nd_Jla.getHeight() * Const_Grand));
+    }
+
+    private void DeSelecionar_Nodo(JLabel Nd_Jla) {
+        Nd_Jla.setSize((int) (Nd_Jla.getWidth() / Const_Grand), (int) (Nd_Jla.getHeight() / Const_Grand));
     }
 
     private void IniciarComponent() {
@@ -169,65 +264,10 @@ public class ArbolPanel extends JPanel implements MouseListener {
         }
     }
 
-    public void Activar_Nodo(Nodo Nd) {
-        JLabel ax;
-        ax = ((JLabel) getComponentAt(Nd.getLocation()));
-        ax.setBackground(Color.BLACK);
-        Nd.setIs_Activ(true);
-        for (Nodo N : Nd.getVertice()) {
-            ax = ((JLabel) getComponentAt(N.getLocation()));
-            ax.setVisible(true);
-            ax.setBackground(Color.gray);
-        }
-
-        if (Nd instanceof Modificador_Nodo) {
-            Asignar_Modificador((Modificador_Nodo) Nd);
-        }
-
-        if (Nd instanceof Modificador_Click) {
-            Cli_List.Modi_Click_Token((Modificador_Click) Nd);
-            return;
-        }
-
-        Tree.Calcular_Total();
-    }
-
     private void Asignar_Modificador(Modificador_Nodo nd) {
         for (Nodo N : nd.getNodos_Afect()) {
             if (N instanceof Generador) {
                 ((Generador) N).Modificar_Gene(nd);
-            }
-        }
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        for (Nodo nodoOrigen : Tree.getNodos()) {
-            Point origen = nodoOrigen.getLocation();
-            int x1 = origen.x + nodoOrigen.getDm().width / 2;
-            int y1 = origen.y + nodoOrigen.getDm().height / 2;
-
-            for (Nodo nodoDestino : nodoOrigen.getVertice()) {
-                Point destino = nodoDestino.getLocation();
-                int x2 = destino.x + nodoDestino.getDm().width / 2;
-                int y2 = destino.y + nodoDestino.getDm().height / 2;
-
-                if (!nodoDestino.isIs_Activ()) {
-                    g2d.setColor(Color.GRAY);
-
-                    BasicStroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
-                            new float[] { 9 }, 0);
-                    g2d.setStroke(dashed);
-                } else {
-                    g2d.setColor(Color.DARK_GRAY);
-                    g2d.setStroke(new BasicStroke(3));
-                }
-
-                if (nodoOrigen.isIs_Activ()) {
-                    g2d.drawLine(x1, y1, x2, y2);
-                }
             }
         }
     }
