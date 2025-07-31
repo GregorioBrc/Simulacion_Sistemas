@@ -45,6 +45,7 @@ public class Nodo {
         Token = token;
         Descripcion = descripcion;
         Is_Activ = is_Activ;
+        Costo = costo;
         Vertice = new ArrayList<Nodo>();
         Location = new Point();
         Dm = new Dimension();
