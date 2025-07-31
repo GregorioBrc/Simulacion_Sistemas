@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import controller.Arbol_Listener;
 import controller.Compra_Listener;
 import model.Arbol;
+import model.Generador;
 import model.Modificador_Nodo;
 import model.Nodo;
 
@@ -166,7 +167,6 @@ public class ArbolPanel extends JPanel implements MouseListener {
             ax = ((JLabel) getComponentAt(N.getLocation()));
             ax.setVisible(true);
             ax.setBackground(Color.gray);
-            // N.setIs_Activ(true);
         }
 
         if (Nd instanceof Modificador_Nodo) {
@@ -177,7 +177,11 @@ public class ArbolPanel extends JPanel implements MouseListener {
     }
 
     private void Asignar_Modificador(Modificador_Nodo nd) {
-        
+        for (Nodo N : nd.getNodos_Afect()) {
+            if (N instanceof Generador) {
+                ((Generador) N).Modificar_Gene(nd);
+            }
+        }
     }
 
 }

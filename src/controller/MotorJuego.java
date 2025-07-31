@@ -28,6 +28,7 @@ public class MotorJuego implements ActionListener, Compra_Listener {
         Cargar_Listeners();
         Registrar_Tokens();
 
+        Actualizar_Info_gene();
         Tiker = new Timer(1000, this);
         Tiker.start();
     }
@@ -57,6 +58,10 @@ public class MotorJuego implements ActionListener, Compra_Listener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Bill.tick();
+        Actualizar_Info_gene();
+    }
+
+    private void Actualizar_Info_gene() {
         ArrayList<String> Ax_Noms = Arbs.get(Arbol_Indx).getTree().getToken_a_Generar();
         Vt.getPn_Gene().Actualizar(Bill.getCantidades(Ax_Noms), Bill.getGeneracions(Ax_Noms));
     }
@@ -67,6 +72,7 @@ public class MotorJuego implements ActionListener, Compra_Listener {
             Bill.Restar(Nd.getToken(), Nd.getCosto());
             Arbs.get(Arbol_Indx).Activar_Nodo(Nd);
             Actualizar_Tokens();
+            Actualizar_Info_gene();
         }
     }
 

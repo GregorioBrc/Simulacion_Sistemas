@@ -115,8 +115,7 @@ public class Arbol {
                 if (Ax.startsWith("//") || Ax.equals("")) {
                     continue;
                 }
-                
-                
+
                 Spl = Ax.split("\\|");
                 System.out.println(Spl[1]);
                 // Tipo_nodo|id|id_token|Costo|titulo|Descripcion|is_Activo|Vertices|
@@ -155,10 +154,26 @@ public class Arbol {
                 for (int j2 = 0; j2 < Nodos.size(); j2++) {
                     if (Nodos.get(i).getId_Vertice()[j] == Nodos.get(j2).getId()) {
                         Ax.add(Nodos.get(j2));
+                        break;
                     }
                 }
             }
             Nodos.get(i).setVertice(Ax);
+
+            if (Nodos.get(i) instanceof Modificador_Nodo) {
+                Modificador_Nodo Ax_mo = (Modificador_Nodo) Nodos.get(i);
+                
+                for (int In : Ax_mo.getId_Nodos_Afect()) {
+                    Ax = new ArrayList<Nodo>();
+                    for (Nodo nodo : Nodos) {
+                        if (In == nodo.getId()) {
+                            Ax.add(nodo);
+                            break;
+                        }
+                    }
+                    Ax_mo.setNodos_Afect(Ax);
+                }
+            }
         }
     }
 
@@ -171,7 +186,8 @@ public class Arbol {
 
         for (int i = 0; i < Nodos.size(); i++) {
             for (int j = 0; j < Token_a_Generar.size(); j++) {
-                if (Nodos.get(i) instanceof Generador && Nodos.get(i).getToken() == Token_a_Generar.get(j) && Nodos.get(i).isIs_Activ()) {
+                if (Nodos.get(i) instanceof Generador && Nodos.get(i).getToken() == Token_a_Generar.get(j)
+                        && Nodos.get(i).isIs_Activ()) {
                     Double Ax = Total_GeneraxTick.get(j);
                     Ax += ((Generador) Nodos.get(i)).getGeneradoxTick();
                     Total_GeneraxTick.set(j, Ax);
