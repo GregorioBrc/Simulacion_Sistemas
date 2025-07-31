@@ -86,20 +86,16 @@ public class ArbolPanel extends JPanel implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
+    public void mouseExited(MouseEvent e) {}
 
     public Arbol getTree() {
         return Tree;
@@ -136,7 +132,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
             JLabel Ax = new JLabel();
             Ax.setSize(Nd_ax.getDm());
-            Ax.setBackground(Color.BLACK);
+            Ax.setBackground(Color.gray);
             Ax.setOpaque(true);
             if (c % 2 == 0) {
                 if (j <= c / 2) {
@@ -169,7 +165,6 @@ public class ArbolPanel extends JPanel implements MouseListener {
                 j = 0;
                 k = 1;
             }
-            System.out.println(Ax.getBounds());
             add(Ax);
         }
     }
