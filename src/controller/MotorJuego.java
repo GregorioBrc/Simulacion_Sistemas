@@ -33,7 +33,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         Registrar_Tokens();
 
         Actualizar_Info_gene();
-        Tiker = new Timer(1000, this);
+        Tiker = new Timer(10, this);
         Tiker.start();
     }
 

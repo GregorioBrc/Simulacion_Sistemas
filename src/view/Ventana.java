@@ -19,7 +19,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
     public Ventana(ArbolPanel Ab) {
         setTitle("Juego de la Vida");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 800);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(null);
@@ -93,7 +93,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
         // Tree.setSize(1000, 1000);
         Tree.setAr_List(this);
 
-        Tree.setLocation(this.getWidth() - Tree.getWidth() - 50, this.getHeight() - Tree.getHeight() - 50);
+        Tree.setLocation(this.getWidth() - Tree.getWidth(), this.getHeight() - Tree.getHeight());
         // System.out.println(this.getWidth() + ":" + this.getHeight());
         // Tree.setBackground(Color.GREEN);
         Cont.add(Tree, 2);
