@@ -1,18 +1,14 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.IOException;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import controller.Arbol_Listener;
 import controller.Click_Listener;
@@ -30,10 +26,12 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
     private Arbol Tree;
     private Arbol_Listener Ar_List;
-    private JLabel Node_Select_Jlabel;
+    private Nodo_Vista Node_Select_Jlabel;
     private Nodo Node_Select;
     private Compra_Listener Com_Listener;
     private Click_Listener Cli_List;
+    private Image imagenFondo = null;
+
 
     public ArbolPanel(String Nm) {
         try {
@@ -41,7 +39,9 @@ public class ArbolPanel extends JPanel implements MouseListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         IniciarComponent();
+        cargarImagenFondo("src/img/fondo1.png"); // Ruta relativa 
         Cargar_Cuerpo_Nodos();
     }
 
@@ -76,7 +76,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
                 if (Node_Select_Jlabel != null) {
                     DeSelecionar_Nodo(Node_Select_Jlabel);
                 }
-                Node_Select_Jlabel = (JLabel) (getComponentAt(Ax_Nd.getLocation()));
+                Node_Select_Jlabel = (Nodo_Vista) (getComponentAt(Ax_Nd.getLocation()));
                 Node_Select = Ax_Nd;
                 Selecionar_Nodo(Node_Select_Jlabel);
                 Ar_List.onNodoSeleccionado(Ax_Nd);
@@ -132,15 +132,14 @@ public class ArbolPanel extends JPanel implements MouseListener {
     }
 
     public void Activar_Nodo(Nodo Nd) {
-        JLabel ax;
-        ax = ((JLabel) getComponentAt(Nd.getLocation()));
-        ax.setBackground(Color.BLACK);
+        Nodo_Vista ax = (Nodo_Vista) getComponentAt(Nd.getLocation());
+        ax.setImagen(Nd.getNombreImagen());
+        ax.setIsActiv(true); // Activa visualmente (por ejemplo cambia color a verde)
         Nd.setIs_Activ(true);
 
         if (Nd instanceof Generador) {
             ((Generador) Nd).Comprar_Uni();
-            ax.setForeground(Color.white);
-            ax.setText(((Generador) Nd).getCant() + "");
+            ax.setTexto(((Generador) Nd).getCant() + ""); // Mostramos el valor numérico si quieres
         }
 
         if (Nd instanceof Modificador_Nodo) {
@@ -155,19 +154,19 @@ public class ArbolPanel extends JPanel implements MouseListener {
         Tree.Calcular_Total();
 
         for (Nodo N : Nd.getVertice()) {
-            ax = ((JLabel) getComponentAt(N.getLocation()));
-            ax.setVisible(true);
-            ax.setBackground(Color.gray);
-            
+            Nodo_Vista vecino = (Nodo_Vista) getComponentAt(N.getLocation());
+            vecino.setVisible(true);
+            vecino.setColor(Color.GRAY); // Visualmente "habilitado"
         }
     }
+
 
     public void Comprar_Generador(Generador Nd) {
         Nd.Comprar_Uni();
 
-        JLabel ax = ((JLabel) getComponentAt(Nd.getLocation()));
+        Nodo_Vista ax = ((Nodo_Vista) getComponentAt(Nd.getLocation()));
         ax.setForeground(Color.white);
-        ax.setText(Nd.getCant() + "");
+        ax.setTexto(Nd.getCant() + "");
 
         Tree.Calcular_Total();
     }
@@ -175,6 +174,11 @@ public class ArbolPanel extends JPanel implements MouseListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        if (imagenFondo != null) {
+            g.drawImage(imagenFondo,0, 0, getWidth(), getHeight(), this);
+        }
+
         Graphics2D g2d = (Graphics2D) g;
         for (Nodo nodoOrigen : Tree.getNodos()) {
             Point origen = nodoOrigen.getLocation();
@@ -204,65 +208,68 @@ public class ArbolPanel extends JPanel implements MouseListener {
         }
     }
 
-    private void Selecionar_Nodo(JLabel Nd_Jla) {
+    private void Selecionar_Nodo(Nodo_Vista Nd_Jla) {
         Nd_Jla.setSize((int) (Nd_Jla.getWidth() * Const_Grand), (int) (Nd_Jla.getHeight() * Const_Grand));
     }
 
-    private void DeSelecionar_Nodo(JLabel Nd_Jla) {
+    private void DeSelecionar_Nodo(Nodo_Vista Nd_Jla) {
         Nd_Jla.setSize((int) (Nd_Jla.getWidth() / Const_Grand), (int) (Nd_Jla.getHeight() / Const_Grand));
     }
 
+    private void cargarImagenFondo(String path) {
+        try {
+            imagenFondo = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            System.err.println("Error cargando imagen de fondo: " + path);
+        }
+    }
+
     private void IniciarComponent() {
-        setSize(1000, 1000);
+        setSize(1200, 800);
         setLayout(null);
-        setBackground(Color.GREEN);
         addMouseListener(this);
     }
 
-    private void Cargar_Cuerpo_Nodos() {
-        int a = getWidth() / 2, b = (int) (getHeight() - Tree.getNodos().get(0).getDm().getHeight() * 2), c = 1;
+private void Cargar_Cuerpo_Nodos() {
+    int centerX = getWidth() / 2;
+    int offsetX = -20; // ⇨ Ajusta este valor para ir más a la derecha
+    int startY = getHeight() - 150;
+    int level = 0;
+    int nodeIndex = 0;
 
-        for (int i = 0, j = 1, k = 0; i < Tree.getNodos().size(); i++, j++) {
-            Nodo Nd_ax = Tree.getNodos().get(i);
+    int nodesInLevel = 1;
 
-            JLabel Ax = new JLabel();
-            Ax.setSize(Nd_ax.getDm());
-            Ax.setBackground(Color.gray);
-            Ax.setOpaque(true);
-            if (c % 2 == 0) {
-                if (j <= c / 2) {
-                    Nd_ax.setLocation(
-                            a - j * Const_Separacion + Const_Separacion / 2, b - Ax.getHeight() - 10);
-                } else {
-                    Nd_ax.setLocation(a + k * Const_Separacion - Const_Separacion / 2,
-                            b - Ax.getHeight() - 10);
-                    k++;
+        while (nodeIndex < Tree.getNodos().size()) {
+            int spacing = Const_Separacion;
+            int totalWidth = (nodesInLevel - 1) * spacing;
+            int startX = centerX - totalWidth / 2 + offsetX;
+
+            for (int i = 0; i < nodesInLevel && nodeIndex < Tree.getNodos().size(); i++, nodeIndex++) {
+                Nodo nodo = Tree.getNodos().get(nodeIndex);
+                Nodo_Vista vista = new Nodo_Vista();
+                vista.setSize(nodo.getDm());
+                vista.setColor(Color.GRAY);
+
+                // Posición del nodo
+                int x = startX + i * spacing;
+                int y = startY - level * Const_Separacion;
+
+                nodo.setLocation(x, y);
+                vista.setLocation(x, y);
+
+                if (nodeIndex != 0) {
+                    vista.setVisible(nodo.isIs_Activ());
                 }
-            } else {
-                if (j < Math.round((double) c / 2.0)) {
-                    Nd_ax.setLocation(a - j * Const_Separacion, b - Ax.getHeight() - 10);
-                } else if (j > Math.round((double) c / 2.0)) {
-                    Nd_ax.setLocation(a + k * Const_Separacion, b - Ax.getHeight() - 10);
-                    k++;
-                } else {
-                    Nd_ax.setLocation(a, b - Ax.getHeight() - 10);
-                }
+
+                add(vista);
             }
 
-            if (i != 0) {
-                Ax.setVisible(Nd_ax.isIs_Activ());
-            }
-
-            Ax.setLocation(Nd_ax.getLocation());
-            if (j == c) {
-                b -= Const_Separacion;
-                c++;
-                j = 0;
-                k = 1;
-            }
-            add(Ax);
+            level++;
+            nodesInLevel++;
         }
     }
+
+
 
     private void Asignar_Modificador(Modificador_Nodo nd) {
         for (Nodo N : nd.getNodos_Afect()) {

@@ -104,35 +104,56 @@ public class Arbol {
         File Fl = new File("Nd_" + Nombre + ".dt");
         if (Fl.exists()) {
             Scanner Sc = new Scanner(Fl);
-            String Ax = "";
+            String Ax;
             String[] Spl;
-            while (true) {
+            while (Sc.hasNextLine()) {
                 Ax = Sc.nextLine();
 
-                if (!Sc.hasNextLine()) {
-                    break;
-                }
-                if (Ax.startsWith("//") || Ax.equals("")) {
+                if (Ax.startsWith("//") || Ax.trim().isEmpty()) {
                     continue;
                 }
 
                 Spl = Ax.split("\\|");
-                // Tipo_nodo|id|id_token|Costo|titulo|Descripcion|is_Activo|Vertices|
+                // Asegura que hay suficientes elementos
+                if (Spl.length < 9) {
+                    System.err.println("Línea inválida: " + Ax);
+                    continue;
+                }
 
-                Nodo Ax_Nd = new Nodo(Integer.parseInt(Spl[1]), Tokens.tokens[Integer.parseInt(Spl[2])], Spl[4], Spl[5],
-                        Boolean.parseBoolean(Spl[6]), Double.parseDouble(Spl[3]));
+                // Crea el Nodo base con el nuevo constructor
+                Nodo Ax_Nd = new Nodo(
+                    Integer.parseInt(Spl[1]),
+                    Tokens.tokens[Integer.parseInt(Spl[2])],
+                    Spl[4],
+                    Spl[5],
+                    Boolean.parseBoolean(Spl[6]),
+                    Double.parseDouble(Spl[3]),
+                    Spl[Spl.length - 1] // Último campo = nombreImagen
+                );
+
                 Ax_Nd.setId_Vertice(Utils.String_To_Array(Spl[7]));
 
-                if (Spl[0].equals("Nd_Gene")) {
-                    Nodos.add(new Generador(Ax_Nd, Utils.Parse_Dou(Spl[8])));
+                switch (Spl[0]) {
+                    case "Nd_Gene":
+                        // |...|valorGenerado|nombreImagen
+                        Nodos.add(new Generador(Ax_Nd, Utils.Parse_Dou(Spl[8])));
+                        break;
 
-                } else if (Spl[0].equals("Nd_Clic")) {
-                    Nodos.add(new Modificador_Click(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]));
+                    case "Nd_Clic":
+                        // |...|valorMod|descMod|nombreImagen
+                        Nodos.add(new Modificador_Click(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]));
+                        break;
 
-                } else if (Spl[0].equals("Nd_Modi")) {
-                    Modificador_Nodo a = new Modificador_Nodo(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]);
-                    a.setId_Nodos_Afect(Utils.String_To_Array(Spl[10]));
-                    Nodos.add(a);
+                    case "Nd_Modi":
+                        // |...|valorMod|descMod|nodosAfectados|nombreImagen
+                        Modificador_Nodo modi = new Modificador_Nodo(Ax_Nd, Utils.Parse_Dou(Spl[8]), Spl[9]);
+                        modi.setId_Nodos_Afect(Utils.String_To_Array(Spl[10]));
+                        Nodos.add(modi);
+                        break;
+
+                    default:
+                        System.err.println("Tipo de nodo desconocido: " + Spl[0]);
+                        break;
                 }
             }
             Sc.close();
@@ -140,9 +161,9 @@ public class Arbol {
             Nodos = new ArrayList<>();
             System.out.println("Nodos no encontrado. Iniciando lista vacía.");
             Fl.createNewFile();
-
         }
     }
+
 
     private void Cargar_Vertices() {
         ArrayList<Nodo> Ax;

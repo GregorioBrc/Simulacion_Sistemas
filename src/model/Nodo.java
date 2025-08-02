@@ -7,13 +7,13 @@ import java.util.Arrays;
 
 public class Nodo {
     private int Id;
-    
+
     private String Nombre;
     private String Descripcion;
     private String Token;
-    
+
     private boolean Is_Activ;
-    
+
     protected double Costo;
 
     private ArrayList<Nodo> Vertice;
@@ -22,6 +22,9 @@ public class Nodo {
     private Point Location;
 
     private Dimension Dm;
+
+    private String NombreImagen; // Nueva propiedad
+
     public Nodo(Nodo Nd) {
         Id = Nd.getId();
         Nombre = Nd.getNombre();
@@ -33,9 +36,10 @@ public class Nodo {
         Costo = Nd.getCosto();
         Location = Nd.Location;
         Dm = Nd.Dm;
+        NombreImagen = Nd.getNombreImagen();
     }
 
-    public Nodo(int id, String token, String nombre, String descripcion, boolean is_Activ, double costo) {
+    public Nodo(int id, String token, String nombre, String descripcion, boolean is_Activ, double costo, String nombreImagen) {
         Id = id;
         Nombre = nombre;
         Token = token;
@@ -45,6 +49,7 @@ public class Nodo {
         Vertice = new ArrayList<Nodo>();
         Location = new Point();
         Dm = new Dimension();
+        NombreImagen = nombreImagen;
     }
 
     public double getCosto() {
@@ -59,7 +64,7 @@ public class Nodo {
             Ax_Aris[i] = Vertice.get(i).Id;
         }
 
-        return String.format("%d|%s|%s|%s|%b|%s", Id, Token, Nombre, Descripcion, Is_Activ, Arrays.toString(Ax_Aris));
+        return String.format("%d|%s|%s|%s|%b|%s|%s", Id, Token, Nombre, Descripcion, Is_Activ, Arrays.toString(Ax_Aris), NombreImagen);
     }
 
     public int getId() {
@@ -138,4 +143,11 @@ public class Nodo {
         Token = token;
     }
 
+    public String getNombreImagen() {
+        return NombreImagen;
+    }
+
+    public void setNombreImagen(String nombreImagen) {
+        NombreImagen = nombreImagen;
+    }
 }
