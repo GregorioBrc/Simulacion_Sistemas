@@ -1,12 +1,9 @@
 package view;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.text.Utilities;
+import javax.swing.*;
 
 import Misc.Utils;
 
@@ -17,60 +14,91 @@ public class Panel_Info_Generado extends JPanel {
     private ArrayList<JLabel> J_Nombre_Token;
 
     public Panel_Info_Generado(ArrayList<String> Nom) {
-        J_Tokens = new ArrayList<JLabel>();
-        J_Tokens_x_Seg = new ArrayList<JLabel>();
-        J_Nombre_Token = new ArrayList<JLabel>();
+        J_Tokens = new ArrayList<>();
+        J_Tokens_x_Seg = new ArrayList<>();
+        J_Nombre_Token = new ArrayList<>();
 
+        setOpaque(false); // Importantísimo para permitir transparencia y formas personalizadas
         Iniciar(Nom);
     }
 
     private void Iniciar(ArrayList<String> Nom_a) {
         int N = Nom_a.size();
 
-        setSize(200, 100);
-        setBackground(Color.RED);
+        setSize(420, 120);
         setLayout(null);
 
-        JLabel Ax;
-        for (int i = 0; i < N * 3; i++) {
-            Ax = new JLabel();
-            Ax.setSize(getWidth() / N - 10, getHeight() / 3 - 10);
-            Ax.setHorizontalAlignment(SwingConstants.CENTER);
-            Ax.setOpaque(true);
+        for (int i = 0; i < N; i++) {
+            int w = getWidth() / (N * 2) + 40;
+            int h = getHeight() / 3 - 15;
+            int totalWidth = N * (w + 10) - 10;
+            int startX = (getWidth() - totalWidth) / 2;
+            int x = startX + i * (w + 10);
 
-            if (i % 3 == 0) {
-                Ax.setBackground(Color.orange);
-                Ax.setLocation(i / 3 * (Ax.getWidth() + 10) + 5, 5);
-                Ax.setText(Nom_a.get(i / 3));
-                J_Nombre_Token.add(Ax);
+            // Nombre del token
+            labelBorde nombre = new labelBorde(
+                "<html><div style='color:#000000; font-size:12px; font-weight:bold; text-align:center;'>" + Nom_a.get(i) + "</div></html>",
+                20, 20,
+                new Color(144, 224, 196),
+                Color.BLACK
+            );
+            nombre.setBounds(x, 18, w, h);
+            J_Nombre_Token.add(nombre);
+            add(nombre);
 
-            } else if (i % 3 == 1) {
-                Ax.setBackground(Color.MAGENTA);
-                Ax.setLocation(i / 3 * (Ax.getWidth() + 10) + 5, Ax.getHeight() + 15);
-                Ax.setText("0");
-                J_Tokens.add(Ax);
+            // Cantidad de tokens
+            labelBorde cantidad = new labelBorde(
+                "<html><div style='color:#000000; font-size:14px; font-weight:bold;'>0</div></html>",
+                20, 20,
+                new Color(144, 224, 196),
+                Color.BLACK
+            );
+            cantidad.setBounds(x, h + 23, w, h + 2);
+            J_Tokens.add(cantidad);
+            add(cantidad);
 
-            } else {
-                Ax.setBackground(Color.yellow);
-                Ax.setLocation(i / 3 * (Ax.getWidth() + 10) + 5, Ax.getHeight() * 2 + 15);
-                Ax.setText("0");
-                J_Tokens_x_Seg.add(Ax);
-            }
-
-            add(Ax);
-
+            // Tokens por segundo
+            labelBorde porSegundo = new labelBorde(
+                "<html><div style='color:#000000; font-size:11px;'>0 T/s</div></html>",
+                20, 20,
+                new Color(144, 224, 196),
+                Color.BLACK
+            );
+            porSegundo.setBounds(x, 2 * h + 30, w, h);
+            J_Tokens_x_Seg.add(porSegundo);
+            add(porSegundo);
         }
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Permite bordes suaves
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Color de fondo ovalado
+        g2.setColor(new Color(144, 224, 196));
+
+        // Dibuja óvalo completo del tamaño del panel
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), getHeight(), getHeight());
+
+        g2.dispose();
     }
 
     public void Actualizar(double[] Tokens, double[] Token_x_Seg) {
         for (int i = 0; i < Tokens.length; i++) {
-
-            J_Tokens.get(i).setText(Utils.Formatear_Num(Tokens[i]));
+            String cantidad = "<html><div style='color:#000000; font-size:14px; font-weight:bold;'>" +
+                            Utils.Formatear_Num(Tokens[i]) + "</div></html>";
+            J_Tokens.get(i).setText(cantidad);
 
             if (Token_x_Seg != null && Token_x_Seg.length != 0) {
-                J_Tokens_x_Seg.get(i).setText(Utils.Formatear_Num(Token_x_Seg[i]) + " T/s");
+                String velocidad = "<html><div style='color:#000000; font-size:11px;'>" +
+                                Utils.Formatear_Num(Token_x_Seg[i]) + " T/s</div></html>";
+                J_Tokens_x_Seg.get(i).setText(velocidad);
             }
-
         }
     }
+
 }

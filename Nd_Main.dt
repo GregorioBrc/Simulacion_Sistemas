@@ -22,8 +22,8 @@ Nd_Gene|9|0|20000|Plantas|Convierten la luz solar en energía pura. La base de m
 Nd_Modi|10|0|50000|Fotosíntesis|Optimiza la conversión de luz en las plantas.|false|[]|1.0|Duplica la gen. de Plantas|[10]|fotosintesis
 
 // === ETAPA 5: DOMINIO ANIMAL ===
-Nd_Gene|11|0|100000|Invertebrados|Animales sin columna vertebral, dominan los mares primigenios.|false|[16]|1500.0|invertebrados
-Nd_Gene|12|0|500000|Peces|Los primeros vertebrados. Conquistan los océanos con sus aletas.|false|[17]|8000.0|peces
-Nd_Gene|13|0|2500000|Anfibios|La vida se atreve a salir del agua, pero aún depende de ella.|false|[18]|40000.0|anfibios
-Nd_Gene|14|0|10000000|Reptiles|Con su piel escamosa y huevos amniotas, conquistan la tierra firme.|false|[19]|200000.0|reptiles
+Nd_Gene|11|0|100000|Invertebrados|Animales sin columna vertebral, dominan los mares primigenios.|false|[12]|1500.0|invertebrados
+Nd_Gene|12|0|500000|Peces|Los primeros vertebrados. Conquistan los océanos con sus aletas.|false|[13]|8000.0|peces
+Nd_Gene|13|0|2500000|Anfibios|La vida se atreve a salir del agua, pero aún depende de ella.|false|[14]|40000.0|anfibios
+Nd_Gene|14|0|10000000|Reptiles|Con su piel escamosa y huevos amniotas, conquistan la tierra firme.|false|[15]|200000.0|reptiles
 Nd_Gene|15|0|50000000|Mamíferos|De sangre caliente y cubiertos de pelo, listos para heredar la Tierra.|false|[]|1000000.0|mamiferos

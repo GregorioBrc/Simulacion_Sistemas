@@ -101,7 +101,7 @@ public class Arbol {
     }
 
     private void Cargar_Nodos() throws IOException {
-        File Fl = new File("Nd_" + Nombre + ".dt");
+        File Fl = new File("Nd_" + Nombre + ".dt"); 
         if (Fl.exists()) {
             Scanner Sc = new Scanner(Fl);
             String Ax;
