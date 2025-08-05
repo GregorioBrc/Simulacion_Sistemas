@@ -133,7 +133,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
 
     public void Activar_Nodo(Nodo Nd) {
         Nodo_Vista ax = (Nodo_Vista) getComponentAt(Nd.getLocation());
-        ax.setImagen(Nd.getNombreImagen());
+        ax.setNombreImagen(Nd.getNombreImagen());
         ax.setIsActiv(true); // Activa visualmente (por ejemplo cambia color a verde)
         Nd.setIs_Activ(true);
 

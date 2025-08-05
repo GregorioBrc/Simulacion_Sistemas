@@ -1,9 +1,7 @@
 package view;
 
-import java.awt.Color;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
 import model.Generador;
 import model.Modificador_Nodo;
@@ -12,14 +10,15 @@ import model.Nodo;
 public class Panel_Info_Nodo extends JPanel {
 
     private JLabel[] Lbs;
-    private String IniHtml = "<html><body>";
-    private String FinHtml = "</body></html>";
+    private final String IniHtml = "<html><body>";
+    private final String FinHtml = "</body></html>";
+    private static final java.util.Map<String, ImageIcon> cacheImagenes = new java.util.HashMap<>();
+
 
     public Panel_Info_Nodo() {
-        setSize(400, 150);
+        setSize(450, 200);
         setLayout(null);
-        setBackground(Color.BLUE);
-
+        setOpaque(false); // Para permitir fondo ovalado personalizado
         CargarLabels();
     }
 
@@ -27,51 +26,85 @@ public class Panel_Info_Nodo extends JPanel {
         Lbs = new JLabel[5];
 
         for (int i = 0; i < Lbs.length; i++) {
-            Lbs[i] = new JLabel();
-            Lbs[i].setOpaque(true);
+            labelBorde lb = new labelBorde("", 20, 20, new Color(144, 224, 196), Color.BLACK);
+
             if (i == 0) {
-                Lbs[i].setSize(50, 50);
-                Lbs[i].setLocation(25, 10);
-                Lbs[i].setBackground(Color.ORANGE);
+                // Icono o representación, centrado verticalmente a la izquierda
+                lb.setBounds(25, 60, 60, 60);
             } else if (i == 1) {
-                Lbs[i].setSize(175, 50);
-                Lbs[i].setLocation(100, 10);
-                Lbs[i].setBackground(Color.MAGENTA);
+                // Nombre, centrado arriba
+                lb.setBounds(110, 25, 230, 40);
             } else if (i == 2) {
-                Lbs[i].setSize(350, 65);
-                Lbs[i].setLocation(25, 75);
-                Lbs[i].setBackground(Color.cyan);
+                // Descripción, centrado en el panel
+                lb.setBounds(110, 90, 310, 70);
             } else if (i == 3) {
-                Lbs[i].setSize(75, 25);
-                Lbs[i].setLocation(300, 10);
-                Lbs[i].setBackground(Color.orange);
+                // Costo, arriba a la derecha
+                lb.setBounds(360, 25, 70, 25);
             } else if (i == 4) {
-                Lbs[i].setSize(Lbs[i - 1].getSize());
-                Lbs[i].setLocation(Lbs[i - 1].getX(), Lbs[i - 1].getY() + Lbs[i - 1].getHeight() + 5);
-                Lbs[i].setBackground(Color.red);
+                // Token, debajo del costo
+                lb.setBounds(360, 55, 70, 25);
             }
 
-            add(Lbs[i]);
+            lb.setHorizontalAlignment(SwingConstants.CENTER);
+            lb.setVerticalAlignment(SwingConstants.CENTER);
+            Lbs[i] = lb;
+            add(lb);
         }
-
     }
 
     public void Cargar_Nodo(Nodo Nd) {
-        Lbs[1].setText(Nd.getNombre());
+        ImageIcon icono = obtenerImagenEscalada(Nd.getNombreImagen(), 50, 50);
+        if (icono != null) {
+            Lbs[0].setIcon(icono);
+            Lbs[0].setText("");
+        }
+        
+        Lbs[1].setText("<html><div style='color:#000000; font-size:14px; font-weight:bold;'>" + Nd.getNombre() + "</div></html>");
         Lbs[2].setText(Refinar_Descripcion(Nd));
-        Lbs[3].setText("Costo: " + Nd.getCosto());
-        Lbs[4].setText("" + Nd.getToken());
+        Lbs[3].setText("<html><div style='color:#000000; font-size:08px;'>Costo:" + Nd.getCosto() + "</div></html>");
+        Lbs[4].setText("<html><div style='color:#000000; font-size:12px;'>" + Nd.getToken() + "</div></html>");
     }
 
     private String Refinar_Descripcion(Nodo Nd) {
         String Ax = Nd.getDescripcion();
         if (Nd instanceof Generador) {
-            Ax += "<br><u>Genera: " + ((Generador) (Nd)).getGeneradoxTick() + " " + Nd.getToken() + "</u>";
+            Ax += "<br><u>Genera: " + ((Generador) Nd).getGeneradoxTick() + " " + Nd.getToken() + "</u>";
         } else if (Nd instanceof Modificador_Nodo) {
             Ax += "<br><u>" + ((Modificador_Nodo) Nd).getDescripcion_Modif() + "</u>";
-            //Ax += "<br><u>Mejora: " + ((Modificador_Nodo) Nd).getValor_Modif() + "</u>";
         }
-        return IniHtml + Ax + FinHtml;
+        return IniHtml + "<div style='color:#000000; font-size:12px;'>" + Ax + "</div>" + FinHtml;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(new Color(144, 224, 196)); // Fondo ovalado
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+
+        g2.dispose();
+    }
+
+    private ImageIcon obtenerImagenEscalada(String nombreImagen, int w, int h) {
+        String clave = nombreImagen + "_" + w + "x" + h;
+
+        if (cacheImagenes.containsKey(clave)) {
+            return cacheImagenes.get(clave);
+        }
+
+        String ruta = "/img/" + nombreImagen + ".png";
+        try {
+            ImageIcon icono = new ImageIcon(getClass().getResource(ruta));
+            Image escalada = icono.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+            ImageIcon resultado = new ImageIcon(escalada);
+            cacheImagenes.put(clave, resultado);
+            return resultado;
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar la imagen: " + ruta);
+            return null;
+        }
     }
 
 }
