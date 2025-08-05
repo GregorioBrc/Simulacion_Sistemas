@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import javax.sound.sampled.*;
+import java.net.URL;
+
 import Misc.Tokens;
 import model.Arbol;
 import model.Billetera;
@@ -21,6 +24,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     private ArrayList<ArbolPanel> Arbs;
     private int Arbol_Indx = 0;
     private double Click_Token_Value = 1;
+    private Clip musicaFondo;
     Timer Tiker;
 
     public MotorJuego() throws IOException {
@@ -32,9 +36,12 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         Cargar_Listeners();
         Registrar_Tokens();
 
+        reproducirMusicaFondo("/audio/background.wav");
+
         Actualizar_Info_gene();
         Tiker = new Timer(10, this);
         Tiker.start();
+        Vt.repaint();
     }
 
     @Override
@@ -99,6 +106,18 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     private void Actualizar_Info_gene() {
         ArrayList<String> Ax_Noms = Arbs.get(Arbol_Indx).getTree().getToken_a_Generar();
         Vt.getPn_Gene().Actualizar(Bill.getCantidades(Ax_Noms), Bill.getGeneracions(Ax_Noms));
+    }
+
+    private void reproducirMusicaFondo(String ruta) {
+        try {
+            URL url = getClass().getResource(ruta);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            musicaFondo = AudioSystem.getClip();
+            musicaFondo.open(audioIn);
+            musicaFondo.loop(Clip.LOOP_CONTINUOUSLY); // Repetir indefinidamente
+        } catch (Exception e) {
+            System.err.println("No se pudo reproducir la música de fondo: " + e.getMessage());
+        }
     }
 
 }
