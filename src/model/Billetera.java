@@ -40,6 +40,10 @@ public class Billetera {
         generacion_x_Tick.put(nombre, nuevaGeneracionTotal);
     }
 
+    public void NormalizarGeneracion(Arbol [] Arb){
+
+    }
+
     // Este método se llamaría en cada tick del MotorJuego
     public void tick() {
         for (String nombre : tokens.keySet()) {

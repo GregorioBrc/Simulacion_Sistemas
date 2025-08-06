@@ -30,14 +30,14 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     public MotorJuego() throws IOException {
         Arbs = new ArrayList<ArbolPanel>();
         Bill = new Billetera();
-        Arbs.add(new ArbolPanel("Main","fondo1.png","background"));
-        Arbs.add(new ArbolPanel("Dino","Back_Dino.jpg","dino"));
-        Arbs.add(new ArbolPanel("Espacio","Back_Space.png","space"));
-        Vt = new Ventana(Arbs.get(0),Arbs.size());
+        Arbs.add(new ArbolPanel("Main", "fondo1.png", "background"));
+        Arbs.add(new ArbolPanel("Dino", "Back_Dino.jpg", "dino"));
+        Arbs.add(new ArbolPanel("Espacio", "Back_Space.png", "space"));
+        Vt = new Ventana(Arbs.get(0), Arbs.size());
 
         Cargar_Listeners();
         Registrar_Tokens();
-
+        CalcularGeneracionGlobal();
         reproducirMusicaFondo(Arbs.get(0).getMusic());
 
         Actualizar_Info_gene();
@@ -66,7 +66,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
                 Vt.getPn_Info().Cargar_Nodo(Nd);
             }
 
-            Actualizar_Tokens();
+            CalcularGeneracionGlobal();
             Actualizar_Info_gene();
             Vt.repaint();
         }
@@ -96,15 +96,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         for (int i = 0; i < Arbs.size(); i++) {
             for (String Nom : Arbs.get(i).getTree().getToken_a_Generar()) {
                 Bill.registrarToken(Nom, 0);
-                Bill.Sumar_Tokens_Generado(Nom, Arbs.get(i).getTree().Get_Generado_Token(Nom));
             }
-        }
-    }
-
-    private void Actualizar_Tokens() {
-        Arbol Ax = Arbs.get(Arbol_Indx).getTree();
-        for (String Nm : Ax.getToken_a_Generar()) {
-            Bill.actualizarGeneracion(Nm, Ax.Get_Generado_Token(Nm));
         }
     }
 
@@ -129,13 +121,30 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         }
     }
 
+    private void CalcularGeneracionGlobal() {
+        String[] todosLosTokens = Bill.getNombresDeTokens();
+
+        for (String nombreToken : todosLosTokens) {
+            double generacionTotal = 0.0;
+
+            for (ArbolPanel arbolPanel : Arbs) {
+                generacionTotal += arbolPanel.getTree().Get_Generado_Token(nombreToken);
+            }
+
+            Bill.actualizarGeneracion(nombreToken, generacionTotal);
+        }
+    }
+
     @Override
     public void Cambiar_Arbol(int Indx) {
+        if (Indx == Arbol_Indx) {
+            return;
+        }
         if (Indx >= 0 && Indx < Arbs.size()) {
             Arbol_Indx = Indx;
             reproducirMusicaFondo(Arbs.get(Indx).getMusic());
             Vt.getPn_Gene().Reconstruir(Arbs.get(Indx).getTree().getToken_a_Generar());
-            Actualizar_Tokens();
+            Actualizar_Info_gene();
             Vt.CambiArb(Arbs.get(Indx));
         }
     }
