@@ -74,7 +74,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
 
     @Override
     public void Click_Token() {
-        Bill.Sumar_Tokens(Tokens.tokens[0], Click_Token_Value);
+        Bill.Sumar_Tokens(Arbs.get(Arbol_Indx).getTree().getToken_a_Generar(), Click_Token_Value);
         Actualizar_Info_gene();
     }
 
@@ -134,6 +134,8 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         if (Indx >= 0 && Indx < Arbs.size()) {
             Arbol_Indx = Indx;
             reproducirMusicaFondo(Arbs.get(Indx).getMusic());
+            Vt.getPn_Gene().Reconstruir(Arbs.get(Indx).getTree().getToken_a_Generar());
+            Actualizar_Tokens();
             Vt.CambiArb(Arbs.get(Indx));
         }
     }

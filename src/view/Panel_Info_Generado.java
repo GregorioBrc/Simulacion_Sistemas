@@ -37,39 +37,49 @@ public class Panel_Info_Generado extends JPanel {
 
             // Nombre del token
             labelBorde nombre = new labelBorde(
-                "<html><div style='color:#000000; font-size:12px; font-weight:bold; text-align:center;'>" + Nom_a.get(i) + "</div></html>",
-                20, 20,
-                new Color(144, 224, 196),
-                Color.BLACK
-            );
+                    "<html><div style='color:#000000; font-size:12px; font-weight:bold; text-align:center;'>"
+                            + Nom_a.get(i) + "</div></html>",
+                    20, 20,
+                    new Color(144, 224, 196),
+                    Color.BLACK);
             nombre.setBounds(x, 18, w, h);
             J_Nombre_Token.add(nombre);
             add(nombre);
 
             // Cantidad de tokens
             labelBorde cantidad = new labelBorde(
-                "<html><div style='color:#000000; font-size:14px; font-weight:bold;'>0</div></html>",
-                20, 20,
-                new Color(144, 224, 196),
-                Color.BLACK
-            );
+                    "<html><div style='color:#000000; font-size:14px; font-weight:bold;'>0</div></html>",
+                    20, 20,
+                    new Color(144, 224, 196),
+                    Color.BLACK);
             cantidad.setBounds(x, h + 23, w, h + 2);
             J_Tokens.add(cantidad);
             add(cantidad);
 
             // Tokens por segundo
             labelBorde porSegundo = new labelBorde(
-                "<html><div style='color:#000000; font-size:11px;'>0 T/s</div></html>",
-                20, 20,
-                new Color(144, 224, 196),
-                Color.BLACK
-            );
+                    "<html><div style='color:#000000; font-size:11px;'>0 T/s</div></html>",
+                    20, 20,
+                    new Color(144, 224, 196),
+                    Color.BLACK);
             porSegundo.setBounds(x, 2 * h + 30, w, h);
             J_Tokens_x_Seg.add(porSegundo);
             add(porSegundo);
         }
     }
 
+    public void Reconstruir(ArrayList<String> nuevosNombres) {
+        removeAll();
+
+        J_Tokens.clear();
+        J_Tokens_x_Seg.clear();
+        J_Nombre_Token.clear();
+
+        Iniciar(nuevosNombres);
+
+        revalidate();
+        repaint();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -90,12 +100,12 @@ public class Panel_Info_Generado extends JPanel {
     public void Actualizar(double[] Tokens, double[] Token_x_Seg) {
         for (int i = 0; i < Tokens.length; i++) {
             String cantidad = "<html><div style='color:#000000; font-size:14px; font-weight:bold;'>" +
-                            Utils.Formatear_Num(Tokens[i]) + "</div></html>";
+                    Utils.Formatear_Num(Tokens[i]) + "</div></html>";
             J_Tokens.get(i).setText(cantidad);
 
             if (Token_x_Seg != null && Token_x_Seg.length != 0) {
                 String velocidad = "<html><div style='color:#000000; font-size:11px;'>" +
-                                Utils.Formatear_Num(Token_x_Seg[i]) + " T/s</div></html>";
+                        Utils.Formatear_Num(Token_x_Seg[i]) + " T/s</div></html>";
                 J_Tokens_x_Seg.get(i).setText(velocidad);
             }
         }

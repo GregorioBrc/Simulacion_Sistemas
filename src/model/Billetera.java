@@ -26,6 +26,12 @@ public class Billetera {
         tokens.put(nombre, tokens.getOrDefault(nombre, 0.0) + cantidad);
     }
 
+    public void Sumar_Tokens(ArrayList<String> nombres, double cantidad) {
+        for (String Nom : nombres) {
+            tokens.put(Nom, tokens.getOrDefault(Nom, 0.0) + cantidad);
+        }
+    }
+
     public void Sumar_Tokens_Generado(String nombre, double cantidad) {
         generacion_x_Tick.put(nombre, generacion_x_Tick.getOrDefault(nombre, 0.0) + cantidad);
     }
