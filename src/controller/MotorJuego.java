@@ -18,7 +18,7 @@ import model.Modificador_Click;
 import model.Nodo;
 import view.*;
 
-public class MotorJuego implements ActionListener, Compra_Listener, Click_Listener {
+public class MotorJuego implements ActionListener, Compra_Listener, Click_Listener, Camb_Arbol {
     private Ventana Vt;
     private Billetera Bill;
     private ArrayList<ArbolPanel> Arbs;
@@ -31,7 +31,9 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         Arbs = new ArrayList<ArbolPanel>();
         Bill = new Billetera();
         Arbs.add(new ArbolPanel("Main"));
-        Vt = new Ventana(Arbs.get(0));
+        Arbs.add(new ArbolPanel("Dino"));
+        Arbs.add(new ArbolPanel("Espacio"));
+        Vt = new Ventana(Arbs.get(0),Arbs.size());
 
         Cargar_Listeners();
         Registrar_Tokens();
@@ -39,27 +41,28 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         reproducirMusicaFondo("/audio/background.wav");
 
         Actualizar_Info_gene();
-        Tiker = new Timer(10, this);
+        Tiker = new Timer(1000, this);
         Tiker.start();
         Vt.repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Bill.tick();
-        Actualizar_Info_gene();
+        if (e.getSource().equals(Tiker)) {
+            Bill.tick();
+            Actualizar_Info_gene();
+        }
     }
 
     @Override
     public void Prerequisitos(Nodo Nd, int Modo) {
         if (Nd.getCosto() <= Bill.getCantidad(Nd.getToken())) {
             Bill.Restar(Nd.getToken(), Nd.getCosto());
-            
+
             if (Modo == 0) {
                 Arbs.get(Arbol_Indx).Activar_Nodo(Nd);
-            }
-            else if (Modo == 1) {
-                Arbs.get(Arbol_Indx).Comprar_Generador(((Generador)Nd));
+            } else if (Modo == 1) {
+                Arbs.get(Arbol_Indx).Comprar_Generador(((Generador) Nd));
                 Vt.getPn_Info().Cargar_Nodo(Nd);
             }
 
@@ -85,6 +88,8 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
             Arb.setCom_Listener(this);
             Arb.setCli_List(this);
         }
+
+        Vt.setCamb_Arb_List(this);
     }
 
     private void Registrar_Tokens() {
@@ -117,6 +122,14 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
             musicaFondo.loop(Clip.LOOP_CONTINUOUSLY); // Repetir indefinidamente
         } catch (Exception e) {
             System.err.println("No se pudo reproducir la música de fondo: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void Cambiar_Arbol(int Indx) {
+        if (Indx >= 0 && Indx < Arbs.size()) {
+            Arbol_Indx = Indx;
+            Vt.CambiArb(Arbs.get(Indx));
         }
     }
 

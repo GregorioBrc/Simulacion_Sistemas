@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import javax.swing.*;
 
+import Misc.Utils;
 import model.Generador;
 import model.Modificador_Nodo;
 import model.Nodo;
@@ -13,7 +14,6 @@ public class Panel_Info_Nodo extends JPanel {
     private final String IniHtml = "<html><body>";
     private final String FinHtml = "</body></html>";
     private static final java.util.Map<String, ImageIcon> cacheImagenes = new java.util.HashMap<>();
-
 
     public Panel_Info_Nodo() {
         setSize(450, 200);
@@ -33,16 +33,16 @@ public class Panel_Info_Nodo extends JPanel {
                 lb.setBounds(25, 60, 60, 60);
             } else if (i == 1) {
                 // Nombre, centrado arriba
-                lb.setBounds(110, 25, 230, 40);
+                lb.setBounds(100, 25, 200, 40);
             } else if (i == 2) {
                 // Descripción, centrado en el panel
-                lb.setBounds(110, 90, 310, 70);
+                lb.setBounds(100, 90, 320, 70);
             } else if (i == 3) {
                 // Costo, arriba a la derecha
-                lb.setBounds(360, 25, 70, 25);
+                lb.setBounds(320, 25, 100, 25);
             } else if (i == 4) {
                 // Token, debajo del costo
-                lb.setBounds(360, 55, 70, 25);
+                lb.setBounds(320, 55, 100, 25);
             }
 
             lb.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,11 +58,13 @@ public class Panel_Info_Nodo extends JPanel {
             Lbs[0].setIcon(icono);
             Lbs[0].setText("");
         }
-        
-        Lbs[1].setText("<html><div style='color:#000000; font-size:14px; font-weight:bold;'>" + Nd.getNombre() + "</div></html>");
+
+        Lbs[1].setText(IniHtml + "<div style='color:#000000; font-size:14px; font-weight:bold;'>" + Nd.getNombre()
+                + "</div>" + FinHtml);
         Lbs[2].setText(Refinar_Descripcion(Nd));
-        Lbs[3].setText("<html><div style='color:#000000; font-size:08px;'>Costo:" + Nd.getCosto() + "</div></html>");
-        Lbs[4].setText("<html><div style='color:#000000; font-size:12px;'>" + Nd.getToken() + "</div></html>");
+        Lbs[3].setText(IniHtml + "<div style='color:#000000; font-size:08px;'>Costo:"
+                + Utils.Formatear_Num(Nd.getCosto()) + "</div>" + FinHtml);
+        Lbs[4].setText(IniHtml + "<div style='color:#000000; font-size:12px;'>" + Nd.getToken() + "</div>" + FinHtml);
     }
 
     private String Refinar_Descripcion(Nodo Nd) {
@@ -72,7 +74,7 @@ public class Panel_Info_Nodo extends JPanel {
         } else if (Nd instanceof Modificador_Nodo) {
             Ax += "<br><u>" + ((Modificador_Nodo) Nd).getDescripcion_Modif() + "</u>";
         }
-        return IniHtml + "<div style='color:#000000; font-size:12px;'>" + Ax + "</div>" + FinHtml;
+        return IniHtml + "<div style='color:#000000; padding:2px font-size:12px;'>" + Ax + "</div>" + FinHtml;
     }
 
     @Override

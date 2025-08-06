@@ -1,22 +1,31 @@
 package view;
 
+import java.awt.Button;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 
 import controller.Arbol_Listener;
+import controller.Camb_Arbol;
 import model.Nodo;
 
-public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
+public class Ventana extends JFrame implements KeyListener, Arbol_Listener, ActionListener {
 
     private JLayeredPane Cont = new JLayeredPane();
     private ArbolPanel Tree;
     private Panel_Info_Nodo Pn_Info;
     private Panel_Info_Generado Pn_Gene;
 
-    public Ventana(ArbolPanel Ab) {
+    private JButton [] Btn_Cambio_Mapa;
+    private int Cant_Botones = 0;
+    private Camb_Arbol Camb_Arb_List;
+
+    public Ventana(ArbolPanel Ab, int Cant_Trees) {
         setTitle("Juego de la Vida");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 800);
@@ -28,15 +37,24 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
 
         addKeyListener(this);
 
+        Cant_Botones = Cant_Trees;
+
         show();
 
         Tree = Ab;
         Ini_Components();
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    public void setCamb_Arb_List(Camb_Arbol camb_Arb_List) {
+        Camb_Arb_List = camb_Arb_List;
     }
+
+    public void setCant_Botones(int cant_Botones) {
+        Cant_Botones = cant_Botones;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -66,9 +84,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
 
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-    }
+    public void keyReleased(KeyEvent e) {}
 
     @Override
     public void onNodoSeleccionado(Nodo nodo) {
@@ -81,14 +97,39 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
         Pn_Info.setVisible(false);
     }
 
+    public void CambiArb(ArbolPanel Arb) {
+        Cont.remove(Tree);
+        Tree = Arb;
+        Tree.setAr_List(this);
+        Tree.setLocation(this.getWidth() - Tree.getWidth(), this.getHeight() - Tree.getHeight());
+        Cont.add(Tree, 100);
+        Cont.repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton Ax_b = (JButton) e.getSource();
+        Camb_Arb_List.Cambiar_Arbol(Integer.parseInt(Ax_b.getClientProperty("Id_Arbol").toString()));
+    }
+
     private void Ini_Components() {
         Pn_Info = new Panel_Info_Nodo();
         Pn_Info.setLocation(getWidth() - Pn_Info.getWidth()  , getHeight() - Pn_Info.getHeight() - 30);
         Cont.add(Pn_Info, 0);
 
+        Btn_Cambio_Mapa = new JButton[Cant_Botones];
+        for (int i = 0; i < Btn_Cambio_Mapa.length; i++) {
+            Btn_Cambio_Mapa[i] = new JButton("Mapa " + (i + 1));
+            Btn_Cambio_Mapa[i].setSize(50, 30);
+            Btn_Cambio_Mapa[i].setLocation(getWidth()-Btn_Cambio_Mapa[i].getWidth() - 100, 30 + (i * 35));
+            Btn_Cambio_Mapa[i].addActionListener(this);
+            Btn_Cambio_Mapa[i].putClientProperty("Id_Arbol", i);
+            Cont.add(Btn_Cambio_Mapa[i], 1);
+        }
+
         Pn_Gene = new Panel_Info_Generado((Tree.getTree().getToken_a_Generar()));
         Pn_Gene.setLocation(getWidth() / 2 - Pn_Gene.getWidth() / 2, 10);
-        Cont.add(Pn_Gene, 1);
+        Cont.add(Pn_Gene, 2);
 
         // Tree.setSize(1000, 1000);
         Tree.setAr_List(this);
@@ -96,7 +137,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener {
         Tree.setLocation(this.getWidth() - Tree.getWidth(), this.getHeight() - Tree.getHeight());
         // System.out.println(this.getWidth() + ":" + this.getHeight());
         // Tree.setBackground(Color.GREEN);
-        Cont.add(Tree, 2);
+        Cont.add(Tree, 100);
     }
 
 }

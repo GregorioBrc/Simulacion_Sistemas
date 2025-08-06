@@ -97,7 +97,12 @@ public class Nodo_Vista extends JComponent {
             return resultado;
         } catch (Exception e) {
             System.err.println("No se pudo cargar la imagen: " + ruta);
-            return null;
+            if (!nombreImagen.equals("Null")) {
+                return obtenerImagenEscalada("Null",10,10);
+            }
+            else{
+                return null;
+            }
         }
     }
     
