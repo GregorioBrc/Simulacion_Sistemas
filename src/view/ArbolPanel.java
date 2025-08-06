@@ -31,17 +31,24 @@ public class ArbolPanel extends JPanel implements MouseListener {
     private Compra_Listener Com_Listener;
     private Click_Listener Cli_List;
     private Image imagenFondo = null;
+    private String Music;
 
 
-    public ArbolPanel(String Nm, String Fondo) {
+    public String getMusic() {
+        return Music;
+    }
+
+    public ArbolPanel(String Nm, String Fondo, String Mus) {
         try {
             Tree = new Arbol(Nm);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        Music = "/audio/" + Mus + ".wav";
+
         IniciarComponent();
-        cargarImagenFondo("src/img/"+Fondo); // Ruta relativa| src/img/fondo1.png
+        cargarImagenFondo("src/img/"+Fondo); // Ruta relativa
         Cargar_Cuerpo_Nodos();
     }
 

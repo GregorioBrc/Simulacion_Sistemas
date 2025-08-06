@@ -30,15 +30,15 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     public MotorJuego() throws IOException {
         Arbs = new ArrayList<ArbolPanel>();
         Bill = new Billetera();
-        Arbs.add(new ArbolPanel("Main","fondo1.png"));
-        Arbs.add(new ArbolPanel("Dino","Back_Dino.jpg"));
-        Arbs.add(new ArbolPanel("Espacio","Back_Space.png"));
+        Arbs.add(new ArbolPanel("Main","fondo1.png","background"));
+        Arbs.add(new ArbolPanel("Dino","Back_Dino.jpg","dino"));
+        Arbs.add(new ArbolPanel("Espacio","Back_Space.png","space"));
         Vt = new Ventana(Arbs.get(0),Arbs.size());
 
         Cargar_Listeners();
         Registrar_Tokens();
 
-        reproducirMusicaFondo("/audio/background.wav");
+        reproducirMusicaFondo(Arbs.get(0).getMusic());
 
         Actualizar_Info_gene();
         Tiker = new Timer(1000, this);
@@ -114,6 +114,10 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     }
 
     private void reproducirMusicaFondo(String ruta) {
+        if (musicaFondo != null && musicaFondo.isRunning()) {
+            musicaFondo.stop();
+        }
+
         try {
             URL url = getClass().getResource(ruta);
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
@@ -129,6 +133,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     public void Cambiar_Arbol(int Indx) {
         if (Indx >= 0 && Indx < Arbs.size()) {
             Arbol_Indx = Indx;
+            reproducirMusicaFondo(Arbs.get(Indx).getMusic());
             Vt.CambiArb(Arbs.get(Indx));
         }
     }
