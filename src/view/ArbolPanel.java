@@ -33,7 +33,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
     private Image imagenFondo = null;
 
 
-    public ArbolPanel(String Nm) {
+    public ArbolPanel(String Nm, String Fondo) {
         try {
             Tree = new Arbol(Nm);
         } catch (IOException e) {
@@ -41,7 +41,7 @@ public class ArbolPanel extends JPanel implements MouseListener {
         }
 
         IniciarComponent();
-        cargarImagenFondo("src/img/fondo1.png"); // Ruta relativa 
+        cargarImagenFondo("src/img/"+Fondo); // Ruta relativa| src/img/fondo1.png
         Cargar_Cuerpo_Nodos();
     }
 

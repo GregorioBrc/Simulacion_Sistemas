@@ -30,9 +30,9 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
     public MotorJuego() throws IOException {
         Arbs = new ArrayList<ArbolPanel>();
         Bill = new Billetera();
-        Arbs.add(new ArbolPanel("Main"));
-        Arbs.add(new ArbolPanel("Dino"));
-        Arbs.add(new ArbolPanel("Espacio"));
+        Arbs.add(new ArbolPanel("Main","fondo1.png"));
+        Arbs.add(new ArbolPanel("Dino","Back_Dino.jpg"));
+        Arbs.add(new ArbolPanel("Espacio","Back_Space.png"));
         Vt = new Ventana(Arbs.get(0),Arbs.size());
 
         Cargar_Listeners();
