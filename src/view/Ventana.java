@@ -114,6 +114,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener, Acti
 
     private void Ini_Components() {
         Pn_Info = new Panel_Info_Nodo();
+        Pn_Info.setVisible(false);
         Pn_Info.setLocation(getWidth() - Pn_Info.getWidth()  , getHeight() - Pn_Info.getHeight() - 30);
         Cont.add(Pn_Info, 0);
 
