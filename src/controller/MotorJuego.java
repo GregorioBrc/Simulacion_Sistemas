@@ -41,7 +41,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
         reproducirMusicaFondo(Arbs.get(0).getMusic());
 
         Actualizar_Info_gene();
-        Tiker = new Timer(1000, this);
+        Tiker = new Timer(10, this);
         Tiker.start();
         Vt.repaint();
     }
@@ -112,6 +112,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
 
         try {
             URL url = getClass().getResource(ruta);
+            System.out.println(url);
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             musicaFondo = AudioSystem.getClip();
             musicaFondo.open(audioIn);
