@@ -23,7 +23,7 @@ Nd_Gene|50|0|5000000|Satélites y Lunas (Europa)|Mundos helados que orbitan giga
 Nd_Gene|51|0|25000000|Exoplaneta|La revolucionaria idea de que existen otros mundos orbitando otras estrellas.|false|[52,53]|600000|exoplaneta
 Nd_Gene|52|0|100000000|Nebulosa|Cunas estelares donde nuevas generaciones de estrellas e ideas están naciendo a partir del polvo cósmico.|false|[]|2500000|nebulosa
 Nd_Gene|53|0|500000000|Galaxia (Vía Láctea)|Nuestra propia ciudad de estrellas, un disco espiral con miles de millones de soles y sistemas.|false|[54]|10000000|via_lactea
-Nd_Click|54|0|1000000000|Telescopio Espacial|Una herramienta para mirar más lejos y más profundo. Cada clic revela más del universo, multiplicando la generación de ideas.|false|[]|2|Multiplica x2 el valor del clic|telescopio
+Nd_Gene|54|0|1000000000|Telescopio Espacial|Una herramienta para mirar más lejos y más profundo. Cada clic revela más del universo, multiplicando la generación de ideas.|false|[55]|2|Multiplica x2 el valor del clic|telescopio
 
 // === ETAPA FINAL: MISTERIOS DEL UNIVERSO ===
 Nd_Gene|55|0|10000000000|Agujero Negro|Regiones del espacio-tiempo con una gravedad tan intensa que ni siquiera la luz (o las ideas) pueden escapar una vez dentro.|false|[56]|400000000|agujero_negro

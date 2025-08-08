@@ -19,7 +19,7 @@ Nd_Gene|28|2|75000|Ankylosaurus|El tanque viviente. Su cuerpo estaba cubierto po
 Nd_Gene|29|2|120000|Triceratops|Un herbívoro formidable con tres cuernos y una gran gola ósea para proteger su cuello.|false|[30]|3500|triceratops
 Nd_Modi|30|2|250000|Defensas Naturales|La carrera armamentista evolutiva. Mejora la supervivencia y el legado fósil de los herbívoros acorazados.|false|[31]|0.40|Aumenta 40% la gen. de Ankylosaurus y Triceratops|[28,29]|defensas
 Nd_Gene|31|2|500000|Tyrannosaurus Rex|El rey tirano de los lagartos. Posiblemente el depredador terrestre más famoso y temible de todos los tiempos.|false|[32]|15000|tiranosaurio
-Nd_Gene|32|2|1000000|Reptiles Marinos (Mosasaurus)|Depredadores acuáticos masivos que aterrorizaron los océanos del Cretácico tardío.|false|[]|40000|mosasaurus
+Nd_Gene|32|2|1000000|Reptiles Marinos (Mosasaurus)|Depredadores acuáticos masivos que aterrorizaron los océanos del Cretácico tardío.|false|[33]|40000|mosasaurus
 
 // === ETAPA FINAL: EL LEGADO FÓSIL ===
-Nd_Modi|33|2|5000000|Impacto del Asteroide|El evento cataclísmico que puso fin a su reinado, pero cimentó su legado eterno en forma de fósiles.|false|[]|1.0|Duplica la generación de TODOS los dinosaurios|[21,22,23,26,27,28,29,31]|asteroide
+Nd_Modi|33|2|5000000|Impacto del Asteroide|El evento cataclísmico que puso fin a su reinado, pero cimentó su legado eterno en forma de fósiles.|false|[]|1.0|Duplica la generación de TODOS los dinosaurios|[]|asteroide

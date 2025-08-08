@@ -121,7 +121,7 @@ public class Ventana extends JFrame implements KeyListener, Arbol_Listener, Acti
         Btn_Cambio_Mapa = new JButton[Cant_Botones];
         for (int i = 0; i < Btn_Cambio_Mapa.length; i++) {
             Btn_Cambio_Mapa[i] = new JButton("Mapa " + (i + 1));
-            Btn_Cambio_Mapa[i].setSize(50, 30);
+            Btn_Cambio_Mapa[i].setSize(100, 30);
             Btn_Cambio_Mapa[i].setLocation(getWidth()-Btn_Cambio_Mapa[i].getWidth() - 100, 30 + (i * 35));
             Btn_Cambio_Mapa[i].addActionListener(this);
             Btn_Cambio_Mapa[i].putClientProperty("Id_Arbol", i);
