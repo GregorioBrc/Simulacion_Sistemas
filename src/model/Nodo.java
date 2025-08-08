@@ -38,6 +38,8 @@ public class Nodo {
         Dm = Nd.Dm;
         NombreImagen = Nd.getNombreImagen();
     }
+    
+    public void setCosto(double c) { Costo = c; }
 
     public Nodo(int id, String token, String nombre, String descripcion, boolean is_Activ, double costo, String nombreImagen) {
         Id = id;

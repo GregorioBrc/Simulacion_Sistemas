@@ -4,41 +4,50 @@ import java.awt.Dimension;
 
 public class Generador extends Nodo {
 
-    private final double Const_Subida_Costo = 1.15;
+    private static final double CONST_SUBIDA_COSTO = 1.15;
 
-    private double GeneradoxTick;
-    private int Cant;
+    private double generadoxTick;
+    private int cant;
+    private double costoBase; // Para recalcular desde el valor inicial
 
-    public Generador(Nodo Nd, double gene) {
-        super(Nd);
-        GeneradoxTick = gene;
-        Cant = 0;
+    public Generador(Nodo nd, double gene) {
+        super(nd);
+        this.generadoxTick = gene;
+        this.cant = 0;
+        this.costoBase = getCosto(); // heredado de Nodo
         setDm(new Dimension(50, 50));
     }
 
-    public int getCant() {
-        return Cant;
+    // ================== GETTERS / SETTERS ==================
+    public int getCant() { return cant; }
+    public void setCant(int c) { 
+        this.cant = c; 
+        recalcCostoDesdeBase();
     }
 
-    public void Modificar_Gene(Modificador_Nodo N) {
-        GeneradoxTick *= (1 + N.getValor_Modif());
+    public double getGeneradoxTick() { 
+        return generadoxTick * cant; 
+    }
+    public void setGeneradoxTick(double generadoxTick) {
+        this.generadoxTick = generadoxTick;
+    }
+
+    // ================== LÓGICA ==================
+    public void recalcCostoDesdeBase() {
+        setCosto(costoBase * Math.pow(CONST_SUBIDA_COSTO, cant));
+    }
+
+    public void Modificar_Gene(Modificador_Nodo n) {
+        generadoxTick *= (1 + n.getValor_Modif());
     }
 
     public void Comprar_Uni(){
-        Cant += 1;
-        Costo *= Const_Subida_Costo;
-    }
-
-    public double getGeneradoxTick() {
-        return GeneradoxTick * Cant;
-    }
-
-    public void setGeneradoxTick(double generadoxTick) {
-        GeneradoxTick = generadoxTick;
+        cant += 1;
+        setCosto(getCosto() * CONST_SUBIDA_COSTO);
     }
 
     @Override
     public String toString() {
-        return "Nd_Gene|" + super.toString() + "|" + GeneradoxTick;
+        return "Nd_Gene|" + super.toString() + "|" + generadoxTick;
     }
 }

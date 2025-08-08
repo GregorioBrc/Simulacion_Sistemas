@@ -37,6 +37,53 @@ public class ArbolPanel extends JPanel implements MouseListener {
     public String getMusic() {
         return Music;
     }
+    
+    // Serializa el estado de este árbol
+public String toJSON() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"nombre\":\"").append(Tree.getNombre()).append("\",\"nodos\":[");
+    int i = 0;
+    for (Nodo n : Tree.getNodos()) {
+        if (i++ > 0) sb.append(",");
+        sb.append("{\"id\":").append(n.getId())
+          .append(",\"activo\":").append(n.isIs_Activ());
+        if (n instanceof Generador) {
+            sb.append(",\"cant\":").append(((Generador)n).getCant());
+        }
+        sb.append("}");
+    }
+    sb.append("]}");
+    return sb.toString();
+}
+
+// Restaura el estado desde JSON
+public void fromJSON(String json) {
+    if (json == null || json.isBlank()) return;
+    for (String nodoJson : json.split("\\{")) {
+        if (!nodoJson.contains("id")) continue;
+        int id = extractInt(nodoJson, "\"id\":");
+        boolean activo = nodoJson.contains("\"activo\":true");
+        int cant = extractInt(nodoJson, "\"cant\":");
+
+        Nodo n = getNodoById(id);
+        if (n != null) {
+            n.setIs_Activ(activo);
+            if (n instanceof Generador) {
+                ((Generador)n).setCant(cant);
+                ((Generador)n).recalcCostoDesdeBase();
+            }
+        }
+    }
+}
+
+// Helper muy simple
+private int extractInt(String src, String key) {
+    int idx = src.indexOf(key);
+    if (idx < 0) return 0;
+    idx += key.length();
+    String num = src.substring(idx).split("[,}]")[0].trim();
+    try { return Integer.parseInt(num); } catch (Exception e) { return 0; }
+}
 
     public ArbolPanel(String Nm, String Fondo, String Mus) {
         try {
@@ -51,6 +98,14 @@ public class ArbolPanel extends JPanel implements MouseListener {
         cargarImagenFondo("src/img/"+Fondo); // Ruta relativa
         Cargar_Cuerpo_Nodos();
     }
+    
+    
+public model.Nodo getNodoById(int id){
+    for (model.Nodo n : Tree.getNodos()){
+        if (n.getId() == id) return n;
+    }
+    return null;
+}
 
     public void setAr_List(Arbol_Listener ar_List) {
         Ar_List = ar_List;
