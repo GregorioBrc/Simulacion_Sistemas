@@ -116,7 +116,7 @@ public class MotorJuego implements ActionListener, Compra_Listener, Click_Listen
 
     private void arrancarTick() {
         if (Tiker != null) Tiker.stop();
-        Tiker = new Timer(10, this);
+        Tiker = new Timer(100, this);
         Tiker.start();
     }
 
